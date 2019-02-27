@@ -11,16 +11,28 @@
 #include <errno.h> 
 #include <unistd.h> 
 
+#include "httpRequest.h"
 
 using namespace std; 
 
 int main(int argc, char *argv[])
 {
-   cout << "> Initialise server...\n";
-  //struct sockaddr_in my_addr; 
- //int bind(int sockfd, struct sockaddr *my_addr, int addrlen);
-  //int socket (int domain, int type, int protocol);
-  
+  cout << "> Initialise server...\n";
+  string hostName, port, file_dir; 
+  hostName = "localhost";
+  port = "4000"; 
+  file_dir = "."; 
+
+  if(argc > 1){
+      hostName = argv[1];
+      port = argv[2]; 
+      file_dir = argv[3];     
+  } else {
+      cout << ">> Default settings\n";
+  }
+        
+  cout << "Host name -> "<< hostName <<" | Port -> " << port << " | File Directory -> "<< file_dir << endl << endl;
+   
   int sockfd,sock02; 
   int b; 
 
@@ -33,12 +45,12 @@ int main(int argc, char *argv[])
   struct addrinfo *servinfo;  // will point to the results
 
   memset(&hints, 0, sizeof hints); // make sure the struct is empty
-  hints.ai_family = AF_INET;     // don't care IPv4 or IPv6
-  hints.ai_socktype = SOCK_STREAM;
+  hints.ai_family = AF_INET;     //set ipv4 
+  hints.ai_socktype = SOCK_STREAM; //tcp
   hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
     //Get address for specific port 
     cout << "> Acquire address info...\n";
-    if ((status = getaddrinfo(NULL, "3490", &hints, &servinfo)) != 0) {
+    if ((status = getaddrinfo(NULL, "4000", &hints, &servinfo)) != 0) {
       fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
       exit(1);
     }
@@ -60,7 +72,7 @@ int main(int argc, char *argv[])
 
     //Listen for incoming connect
     int lis; 
-    cout<<"> Listening...";
+    cout<<"> Listening...\n";
     lis = listen(sockfd, 10);
     if(lis == -1){
       cout << "listen error\n";
@@ -76,12 +88,9 @@ int main(int argc, char *argv[])
       cout << "accept error\n";
       exit(1);
     }
+    cout << ">> Successfully connected to client01\n";
 
-    //Send Sample 
-    int len,bytes_sent; 
-    char* msg = "Hello world\n";
-    len = strlen(msg);
-    bytes_sent = send(sock02,msg,len,0);
+  
 
     
     //Connect! 
