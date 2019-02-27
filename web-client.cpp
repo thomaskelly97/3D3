@@ -21,7 +21,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {    
-    string URL = "http://localhost:4000/index.html"; 
+    string URL = "/index.html"; 
     if (argc > 1){
         URL = argv[1]; 
     }
@@ -42,12 +42,33 @@ int main(int argc, char *argv[])
     cout << ">> Successfully connected to server\n";
 
     //Now we need to create the HTTP Request and send it to the server
-    httpRequest req; 
-    req.set 
     //set host, etc.  
     //call buildRequest to form the message into a string as show: 
     //"GET /beej/inet_ntoaman.html http/1.1\nHOST: retran.com\n\n"
+    cout << "Creating HTTP Request...\n";
+    httpRequest req; 
+    req.setMethod("GET");
+    req.setHost("127.0.0.1");
+    req.setUri(URL);
+    req.setVer("HTTP/1.0");
+    req.createRequest();
+    
     //send that to the server 
+    int reqLen =0, res=0, sent=0;
+    reqLen = req.getLength();
+    char buffer[10054]; 
+    do{
+        res = send(sock02, req.convert().c_str(),(reqLen - sent),0);
+        sent = sent + res; 
+    } while (sent < reqLen);
+    res = recv(sock02, buffer, 10054,0);
+    if(res > 0){
+        cout << buffer; 
+    } else if(res == 0){
+        cout << "Connection Closed\n";
+    } else {
+        cout << "recv failed\n";
+    }
     //server returns code 
     //client processes code 
     //server sends file 

@@ -19,15 +19,16 @@ using namespace std;
 
 class httpRequest
 {
-    std::string method;  
-    std::string host; 
-    std::string uri; 
-    std::vector<string> headers; 
-    std::string parsedHead; 
-    std::string fullRequest; 
+    string method;  
+    string host; 
+    string httpVer; 
+    string uri; 
+    vector<string> headers; 
+    string parsedHead; 
+    string fullRequest; 
     
     void initialise(std::string method, std::string host, std::string uri);
-    std::string parser();
+    string parser();
 
 public: 
     httpRequest(); //default constructor 
@@ -35,6 +36,7 @@ public:
     void addHeader(string header);
     void setHost(string host);
     void setUri(string uri);
+    void setVer(string version);
     void createRequest();
     int getLength();
     std::string getHost();
