@@ -12,6 +12,7 @@
 
 #include "httpRequest.h"
 #include "httpRequest.cpp"
+
 using namespace std; 
 
 
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
     req.setUri(URL);
     req.setVer("HTTP/1.0");
     req.createRequest();
-    
+    cout << "============\n";
     //send that to the server 
     int reqLen =0, res=0, sent=0;
     reqLen = req.getLength();
