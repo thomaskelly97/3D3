@@ -10,7 +10,7 @@
 #include <sstream> 
 #include <errno.h> 
 #include <unistd.h> 
-
+#include <sstream> 
 #include "httpRequest.h"
 
 using namespace std; 
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
       cout << "bind error\n"; 
       exit(1);
     }
-
+  sleep(1);
     //Listen for incoming connect
     int lis; 
     cout<<"> Listening...\n";
@@ -90,7 +90,39 @@ int main(int argc, char *argv[])
     }
     cout << ">> Successfully connected to client01\n";
 
+  //Now we'd want to 'wait' for requests from the client! 
   
+  bool isEnd = false; 
+  char buf[40] = {0};
+  stringstream ss; 
+  cout << "> Receiving request:\n";
+  while(!isEnd){
+    memset(buf, '\0', sizeof(buf));
+    
+    if(recv(sock02, buf, 40, 0) == -1){
+      perror("recv");
+      return 5; 
+    }
+    ss << buf << endl; 
+    cout << buf << endl << "> Successfully received, sending response\n"; 
+    //Need to parse the request. Get method, URL, Version,  IP
+    sleep(2);
+
+    //ECHO BACK >> 
+    string res_msg; 
+    //default response 
+    res_msg = "200 OK\n";
+     if (send(sock02, res_msg.c_str(), 20, 0) == -1) {
+      perror("send");
+      return 6;
+    }
+
+    if (ss.str() == "close\n")
+      break;
+    
+    ss.str("");
+  }
+
 
     
     //Connect! 
