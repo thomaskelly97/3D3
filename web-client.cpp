@@ -20,14 +20,16 @@ using namespace std;
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once 
 
+void parseURL(char url[]); 
+
 int main(int argc, char *argv[])
 {    
-    string URL = "/index.html"; 
+    char *URL = "/index.html"; //default 
     if (argc > 1){
         URL = argv[1]; 
     }
     cout << "Search URL: " << URL << endl; 
-
+    parseURL(URL);
     int sock02 = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in servAddr; 
     servAddr.sin_family = AF_INET;
@@ -53,7 +55,7 @@ int main(int argc, char *argv[])
     req.setUri(URL);
     req.setVer("HTTP/1.0");
     req.createRequest();
-    cout << "============\n";
+    cout << "==================\n";
     //send that to the server 
     int reqLen =0, res=0, sent=0;
     reqLen = req.getLength();
@@ -76,4 +78,41 @@ int main(int argc, char *argv[])
     
 
 
+}
+
+char host[20];
+char port[10];
+char parsed_url[20];  
+void parseURL(char url[]){
+    char sample; 
+    
+    int i=0,j=0,k=0,l=0; //counter
+
+    while(sample != ' '){
+        sample = url[i]; //take in char 
+        cout << sample; 
+        if(sample == ':' && url[i+1] == '/'){
+            //we're two away from host name
+            i=i+3; 
+            while(sample != ':'){
+                host[j] = url[i];  
+                i++; j++; 
+            } //now we have the host name 
+            i++; 
+            sample = url[i]; 
+            while(sample != '/'){
+                port[k] = url[i]; 
+                k++; i++; 
+            }//now we have port num 
+            i++; 
+            sample = url[i]; 
+            while(sample != ' '){
+                parsed_url[l] = url[i]; 
+                l++; i++; 
+            }
+        }
+        
+        i++; 
+    }
+    cout << "Parsed data: " << host << port << parsed_url; 
 }

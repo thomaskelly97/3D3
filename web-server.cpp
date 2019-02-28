@@ -17,9 +17,11 @@
 using namespace std; 
 
 void parseRequest(char buffer[40]);
-string searchFile(char fileName[]);
+string searchFile(char fileName[], int sock);
+void sendFile (FILE *file, int sock); 
+void send400(); 
 char store[30] = {0};
-
+int BR_flag = 0; 
 
 int main(int argc, char *argv[])
 {
@@ -55,13 +57,13 @@ int main(int argc, char *argv[])
   hints.ai_socktype = SOCK_STREAM; //tcp
   hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
     //Get address for specific port 
-    cout << "> Acquire address info...";
+    cout << "> Acquiring address info...";
     if ((status = getaddrinfo(NULL, "4000", &hints, &servinfo)) != 0) {
       fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
       exit(1);
     }
     //Get socket 
-    cout << "Creating socket...";
+    cout << "creating socket...";
     sockfd = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
     if(sockfd == -1){
       cout << "socket error\n"; 
@@ -69,7 +71,7 @@ int main(int argc, char *argv[])
     }
 
     //Bind socket to address
-    cout << "Binding...";
+    cout << "binding...";
     b = bind(sockfd, servinfo->ai_addr, servinfo->ai_addrlen);
     if(b == -1){
       cout << "bind error\n"; 
@@ -78,7 +80,7 @@ int main(int argc, char *argv[])
   sleep(1);
     //Listen for incoming connect
     int lis; 
-    cout<<"Listening...\n";
+    cout<<"listening...\n";
     lis = listen(sockfd, 10);
     if(lis == -1){
       cout << "listen error\n";
@@ -94,7 +96,7 @@ int main(int argc, char *argv[])
       cout << "accept error\n";
       exit(1);
     }
-    cout << ">> Successfully connected to client\n";
+    cout << "> Successfully connected to client\n";
 
   //Now we'd want to 'wait' for requests from the client! 
   
@@ -117,20 +119,16 @@ int main(int argc, char *argv[])
     parseRequest(buf);
     //now store array has the file location we want 
     ss << store << endl; 
-    cout << "> Request parsed, searching for file: "<< store << endl;
+    cout << "> Request parsed, searching for file:"<< store << endl;
+
     //Now we need to search for the file 
-    
-
-
-    //ECHO BACK >> 
     string res_msg;
-    //default response 
-    res_msg = searchFile(store);
+    res_msg = searchFile(store,sock02);
      if (send(sock02, res_msg.c_str(), 20, 0) == -1) {
       perror("send");
       return 6;
     }
-    isEnd = true; 
+    isEnd = true; //set loop to finish 
     if (ss.str() == "close\n")
       break;
     
@@ -154,9 +152,15 @@ void parseRequest(char buffer[40]){
         if(sample == ' '){
           flag = 0; 
         } 
-        store[count] = sample; 
-        //cout << "-" << store[count]; 
-        count++; 
+        else {
+          store[count] = sample; 
+          //cout << "-" << store[count]; 
+          count++; 
+        }
+      if(buffer[0] != 'G' || buffer[1] != 'E' || buffer[2] != 'T' || buffer[3] != ' '){
+          //Since we only need to do GET, make sure this is what is said
+          BR_flag = 1; 
+        }
       }
       //since we know we only need GET, ignore the first three chars
       if(sample == '/' && buffer[i-1] == ' '){ //if we encounter empty space 
@@ -166,18 +170,45 @@ void parseRequest(char buffer[40]){
     }
 }
 
-string searchFile(char fileName[]){
+string searchFile(char fileName[], int sock){
   FILE *f;
   string respCode; 
-  
-  f = fopen("index.html", "r"); //try to open file 
+  //cout << "\"" << fileName << "\"" << endl;  
+  f = fopen(fileName, "r"); //try to open file 
   if(!f){
-    cout << "File isn't here, need to send 404 NOT FOUND\n";
+    cout << "> Sending 404 Not Found\n";
     respCode = "404 Not Found\n";
     f = fopen("404.html", "r"); //open the 'not found' file if you we get that error 
+  } else if (BR_flag == 1){
+    cout << "> Sending 400 Bad Request\n";
+    respCode = "400 Bad Request\n";
+    f = fopen("400.html", "r");
   } else {
-    cout << "File is here, send file!"; 
+    cout << "> File found. Sending 200 OK\n"; 
     respCode = "200 OK\n";
+    //call sendFile function 
+    
   }
+  sendFile(f,sock);
   return respCode;
 }
+
+char buffer[1000]; //will store contents of the html file 
+void sendFile (FILE *file,int sock){
+  int i =0;
+  while(!feof(file)){
+    buffer[i] = fgetc(file); 
+    i++; 
+  }
+  //Now buffer has the file.
+  //cout << "> Sending file\n";
+  int s = send(sock, buffer, 1000, 0);
+  if(s == -1){
+    perror("send");
+  }
+      
+}
+
+void send400(){
+
+} 

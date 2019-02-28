@@ -52,7 +52,7 @@ void httpRequest::createRequest(){
     this->fullRequest = this->fullRequest + this->host + "\r\n"; 
     this->fullRequest = this->fullRequest + this->parser() + "\r\n";
     this->fullRequest = this->fullRequest + "\r\n";
-    cout << "Making the following request:\n" << this->fullRequest << "\n";
+    cout << "Making the following request:\n====================\n" << this->fullRequest << "\n";
 }
 int httpRequest::getLength(){
     return this->fullRequest.length(); 
