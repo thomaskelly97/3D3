@@ -20,20 +20,25 @@ using namespace std;
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once 
 
-void parseURL(char url[]); 
+void parseURL(string url); 
+char host[20];
+char port[10];
+char parsed_url[20];  
 
 int main(int argc, char *argv[])
 {    
-    char *URL = "/index.html"; //default 
+    string URL = {"http://localhost:4000/index.html"}; //default 
     if (argc > 1){
         URL = argv[1]; 
     }
-    cout << "Search URL: " << URL << endl; 
+    cout << "\n---CLIENT---\nSearch URL: " << URL << endl; 
     parseURL(URL);
+    int portNum;
+    portNum = atoi(port); //convert to integer 
     int sock02 = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in servAddr; 
     servAddr.sin_family = AF_INET;
-    servAddr.sin_port = htons(4000);     // short, network byte order
+    servAddr.sin_port = htons(portNum);     // short, network byte order
     servAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     memset(servAddr.sin_zero, '\0', sizeof(servAddr.sin_zero));
 
@@ -51,8 +56,8 @@ int main(int argc, char *argv[])
     cout << "Creating HTTP Request...\n";
     httpRequest req; 
     req.setMethod("GET");
-    req.setHost("127.0.0.1");
-    req.setUri(URL);
+    req.setHost(host);
+    req.setUri(parsed_url);
     req.setVer("HTTP/1.0");
     req.createRequest();
     cout << "==================\n";
@@ -64,6 +69,7 @@ int main(int argc, char *argv[])
         res = send(sock02, req.convert().c_str(),(reqLen - sent),0);
         sent = sent + res; 
     } while (sent < reqLen);
+     cout << "---FILE---\n";
     res = recv(sock02, buffer, 10054,0);
     if(res > 0){
         cout << buffer; 
@@ -80,39 +86,55 @@ int main(int argc, char *argv[])
 
 }
 
-char host[20];
-char port[10];
-char parsed_url[20];  
-void parseURL(char url[]){
-    char sample; 
-    
-    int i=0,j=0,k=0,l=0; //counter
 
-    while(sample != ' '){
-        sample = url[i]; //take in char 
-        cout << sample; 
-        if(sample == ':' && url[i+1] == '/'){
-            //we're two away from host name
-            i=i+3; 
-            while(sample != ':'){
-                host[j] = url[i];  
-                i++; j++; 
-            } //now we have the host name 
-            i++; 
-            sample = url[i]; 
-            while(sample != '/'){
-                port[k] = url[i]; 
-                k++; i++; 
-            }//now we have port num 
-            i++; 
-            sample = url[i]; 
-            while(sample != ' '){
-                parsed_url[l] = url[i]; 
-                l++; i++; 
+void parseURL(string url){
+    //cout << "Entered parser.\n";
+    char sample; 
+    bool h= false, p=false,u=false; 
+    int j=0,k=0,l=0; //counter
+
+    for(std::string::size_type i =0; i<url.size();i++){
+        //loop through string 
+        sample = url[i]; 
+       // cout << "-" << sample << endl;
+        if(i > 6 && h == false){ //if we're over 7 and host not finished
+            host[j] = sample;  
+            //cout << "|" << host[j];
+            j++;
+            if(sample == ':'){
+                h = true; //host is finished 
+                j--;
+                host[j] = 0;
+                 //block out the ':' 
+            }
+        } 
+        if(i > (6+j+1) && p == false){
+            port[k] = sample; 
+            //cout << "~" << port[k]; 
+            k++; 
+            if(sample == '/'){
+                p=true;
+                parsed_url[l] = sample; 
+                l++; 
+                k--;  
+                port[k] = 0;
+                
             }
         }
-        
-        i++; 
+        if(i > (7+j+k+1) && u == false){
+            parsed_url[l] = sample; 
+            //cout << "+" << parsed_url[l]; 
+            l++; 
+            if(sample == ' '){
+                u = true; 
+                l--; 
+                parsed_url[l] = 0;
+                
+                break; 
+            }
+        }
+      
+
     }
-    cout << "Parsed data: " << host << port << parsed_url; 
+    cout << "Parsed data: \nHost: " << host << "\nPort Number: " << port << "\nURL: "<< parsed_url << endl; 
 }

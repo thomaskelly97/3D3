@@ -25,13 +25,16 @@ int BR_flag = 0;
 
 int main(int argc, char *argv[])
 {
-  cout << "> Initialise server...\n";
+  //DEFAULT SETTINGS 
+  cout << "\n---SERVER---\n";
   string hostName, port, file_dir; 
   hostName = "localhost";
   port = "4000"; 
   file_dir = "."; 
 
+  
   if(argc > 1){
+      cout << ">> Custom settings\n";
       hostName = argv[1];
       port = argv[2]; 
       file_dir = argv[3];     
@@ -40,7 +43,7 @@ int main(int argc, char *argv[])
   }
         
   cout << "Host name -> "<< hostName <<" | Port -> " << port << " | File Directory -> "<< file_dir << endl << endl;
-   
+  const char *portCon = port.c_str(); 
   int sockfd,sock02; 
   int b; 
 
@@ -58,7 +61,7 @@ int main(int argc, char *argv[])
   hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
     //Get address for specific port 
     cout << "> Acquiring address info...";
-    if ((status = getaddrinfo(NULL, "4000", &hints, &servinfo)) != 0) {
+    if ((status = getaddrinfo(NULL, portCon, &hints, &servinfo)) != 0) {
       fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
       exit(1);
     }
@@ -101,14 +104,14 @@ int main(int argc, char *argv[])
   //Now we'd want to 'wait' for requests from the client! 
   
   bool isEnd = false; 
-  char buf[40] = {0};
+  char buf[60] = {0};
   
   stringstream ss; 
   cout << "> Receiving request:\n";
   while(!isEnd){
     memset(buf, '\0', sizeof(buf));
     
-    if(recv(sock02, buf, 40, 0) == -1){
+    if(recv(sock02, buf, 60, 0) == -1){
       perror("recv");
       return 5; 
     }
@@ -118,7 +121,7 @@ int main(int argc, char *argv[])
     sleep(2);
     parseRequest(buf);
     //now store array has the file location we want 
-    ss << store << endl; 
+    //ss << store << endl; 
     cout << "> Request parsed, searching for file:"<< store << endl;
 
     //Now we need to search for the file 
@@ -132,22 +135,23 @@ int main(int argc, char *argv[])
     if (ss.str() == "close\n")
       break;
     
-    ss.str("");
+    
   }
     
   cout << "EXIT\n";
   return 0;
 }
 
-void parseRequest(char buffer[40]){
+void parseRequest(char buffer[60]){
     char sample;
     int flag=0; 
     //cout << "Entered parseRequest.\n";
      //max size = 30 
     int count =0; 
-    for(int i=0; i < 40; i++){
+    for(int i=0; i < 60; i++){
       sample = buffer[i]; //take in a character from buf 
-      //cout  << " " << sample; 
+      
+      //cout  << "|" << sample; 
       if(flag == 1){
         if(sample == ' '){
           flag = 0; 
@@ -175,6 +179,7 @@ string searchFile(char fileName[], int sock){
   string respCode; 
   //cout << "\"" << fileName << "\"" << endl;  
   f = fopen(fileName, "r"); //try to open file 
+ 
   if(!f){
     cout << "> Sending 404 Not Found\n";
     respCode = "404 Not Found\n";
@@ -209,6 +214,3 @@ void sendFile (FILE *file,int sock){
       
 }
 
-void send400(){
-
-} 
