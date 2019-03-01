@@ -17,12 +17,13 @@
 using namespace std; 
 
 void parseRequest(char buffer[500]);
-string searchFile(char fileName[], int sock);
+void searchFile(char fileName[], int sock);
 void sendFile (FILE *file, int sock); 
-void send400(); 
+
+int send_file =0; 
 char store[1000] = {0};
 int BR_flag = 0; 
-FILE *f;
+
 
 int main(int argc, char *argv[])
 {
@@ -78,11 +79,20 @@ int main(int argc, char *argv[])
     cout << "binding...";
    
     b = bind(sockfd, servinfo->ai_addr, servinfo->ai_addrlen);
+    int yes=1;
+    //char yes='1'; // Solaris people use this
+
+    // lose the pesky "Address already in use" error message
+    if (setsockopt(sockfd,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof yes) == -1) {
+      perror("setsockopt");
+      exit(1);
+    } 
+
     if(b == -1){
       cout << "bind error\n"; 
       exit(1);
     }
-  sleep(1);
+    sleep(1);
     //Listen for incoming connect
     int lis; 
     cout<<"listening...\n";
@@ -110,6 +120,7 @@ int main(int argc, char *argv[])
   
   stringstream ss; 
   cout << "> Receiving request:\n";
+  
   while(!isEnd){
     memset(buf, '\0', sizeof(buf));
     
@@ -127,13 +138,13 @@ int main(int argc, char *argv[])
     cout << "> Request parsed, searching for file:"<< store << endl;
 
     //Now we need to search for the file 
-    string res_msg;
-    res_msg = searchFile(store,sock02);
-     if (send(sock02, res_msg.c_str(), 40, 0) == -1) {
-      perror("send");
-      return 6;
-    } 
-    sendFile(f,sock02);
+    //string res_msg;
+   
+    searchFile(store,sock02);
+
+
+  
+    
     isEnd = true; //set loop to finish 
     if (ss.str() == "close\n")
       break;
@@ -165,42 +176,49 @@ void parseRequest(char buffer[500]){
           //cout << "-" << store[count]; 
           count++; 
         }
-      if(buffer[0] != 'G' || buffer[1] != 'E' || buffer[2] != 'T' || buffer[3] != ' '){
-          //Since we only need to do GET, make sure this is what is said
-          BR_flag = 1; 
-        }
+        
+     
       }
       //since we know we only need GET, ignore the first three chars
       if(sample == '/' && buffer[i-1] == ' '){ //if we encounter empty space 
         //now we know the next thing will be the directory 
         flag = 1; 
       }
+      if(buffer[i] == 'H' && buffer[i+1] == 'T' && buffer[i+2] == 'T' && buffer[i+3] == 'P'){
+          //Since we only need to do GET, make sure this is what is said
+          if(buffer[i+7] == '1'){ //then we have requested http 1.1 
+            BR_flag = 1; 
+          }
+      }
     }
 }
 
-string searchFile(char fileName[], int sock){
-  
+void searchFile(char fileName[], int sock){
+  FILE *f;
   string respCode; 
   //cout << "\"" << fileName << "\"" << endl;  
-  f = fopen(fileName, "r"); //try to open file 
- 
-  if(!f){
-    cout << "> Sending 404 Not Found\n";
-    respCode = "HTTP/1.0 404 Not Found\r\n\r\n";
-    f = fopen("404.html", "r"); //open the 'not found' file if you we get that error 
-  } else if (BR_flag == 1){
+  //try to open file 
+  f = fopen(fileName, "r");
+  if(BR_flag == 1){
     cout << "> Sending 400 Bad Request\n";
     respCode = "HTTP/1.0 400 Bad Request\r\n\r\n";
     f = fopen("400.html", "r");
+  } else if (!f){
+    cout << "> Sending 404 Not Found\n";
+    respCode = "HTTP/1.0 404 Not Found\r\n\r\n";
+    f = fopen("404.html", "r"); //open the 'not found' file if you we get that error 
   } else {
     cout << "> File found. Sending 200 OK\n"; 
     respCode = "HTTP/1.0 200 OK\r\n\r\n";
-    //call sendFile function 
-    
   }
-  
-  return respCode;
-  
+  if (send(sock, respCode.c_str(), 40, 0) == -1) {
+      perror("send");
+      //return 6;
+    } 
+
+  sendFile(f,sock);
+
+  //return respCode;
 }
 
 char buffer[500]; //will store contents of the html file 
@@ -213,6 +231,7 @@ void sendFile (FILE *file,int sock){
   }
   //Now buffer has the file.
   //cout << "> Sending file\n";
+  //cout << " " << buffer;  
   int s = send(sock, buffer, 500, 0);
   if(s == -1){
     perror("send");

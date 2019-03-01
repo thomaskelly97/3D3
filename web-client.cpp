@@ -9,6 +9,7 @@
 #include <sstream> 
 #include <errno.h> 
 #include <unistd.h> 
+#include <fstream> 
 
 #include "httpRequest.h"
 #include "httpRequest.cpp"
@@ -20,6 +21,7 @@ using namespace std;
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once 
 
+void writeTo(char input[]);
 void parseURL(string url); 
 char host[20];
 char port[10];
@@ -63,26 +65,46 @@ int main(int argc, char *argv[])
     req.setMethod("GET");
     req.setHost(host);
     req.setUri(parsed_url);
-    req.setVer("HTTP/1.0");
+    int answ; 
+    cout << "Set HTTP Version - Enter 1 or 0 - (Setting HTTP/1.1 will return bad request.)\n";
+    cin >> answ; 
+    if(answ == 1){
+        req.setVer("HTTP/1.1");
+    } else {
+        req.setVer("HTTP/1.0");
+    }
+    
+    
     req.createRequest();
     cout << "==================\n";
     //send that to the server 
-    int reqLen =0, res=0, sent=0;
+    int reqLen =0, res=0, sent=0,res2=0;
     reqLen = req.getLength();
     char buffer[10054]; 
+    char msg[40]; 
     do{
         res = send(sock02, req.convert().c_str(),(reqLen - sent),0);
         sent = sent + res; 
     } while (sent < reqLen);
+    cout << "Server Response: \n";
+    res2 = recv(sock02,msg, 40,0);
+    if (res2 > 0){
+        cout << msg; 
+    }
      cout << "---FILE---\n";
     res = recv(sock02, buffer, 10054,0);
     if(res > 0){
         cout << buffer; 
-    } else if(res == 0){
+    } 
+     else if(res == 0){
         cout << "Connection Closed\n";
     } else {
         cout << "recv failed\n";
     }
+    //Now buffer has the file contents! 
+    //Need to write to the file 
+    writeTo(buffer);
+   
 
     close(sock02);
 }
@@ -135,7 +157,15 @@ void parseURL(string url){
             }
         }
       
-
     }
-    cout << "Parsed data: \nHost: " << host << "\nPort Number: " << port << "\nURL: "<< parsed_url << endl; 
+    cout << "Parsed data: \nHost: " << host << "\nPort Number: " << port << "\nRequested File: "<< parsed_url << endl; 
+}
+
+
+void writeTo(char input[]){
+    ofstream recFile; 
+    cout << "\n> Saving response to the 'receiveFile'...\n";
+    recFile.open("receiveFile.html", std::ofstream::out | std::ofstream::trunc);
+    recFile << input; 
+    recFile.close(); 
 }
