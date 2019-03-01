@@ -52,7 +52,12 @@ int main(int argc, char *argv[])
     //Now we need to create the HTTP Request and send it to the server
     //set host, etc.  
     //call buildRequest to form the message into a string as show: 
-    //"GET /beej/inet_ntoaman.html http/1.1\nHOST: retran.com\n\n"
+   
+    //for(int ii = 0; ii < argc; ii++){
+        //loop through input arguements 
+        
+    //}
+
     cout << "Creating HTTP Request...\n";
     httpRequest req; 
     req.setMethod("GET");
@@ -78,12 +83,8 @@ int main(int argc, char *argv[])
     } else {
         cout << "recv failed\n";
     }
-    //server returns code 
-    //client processes code 
-    //server sends file 
-    
 
-
+    close(sock02);
 }
 
 

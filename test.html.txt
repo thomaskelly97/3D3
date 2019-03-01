@@ -1,3 +1,0 @@
-<h1>Successfully Located Test File<\h1>
-<p>Hello World!!!<\p>
-<h5>This is the secondary tester file<\h5>

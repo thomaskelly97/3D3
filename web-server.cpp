@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
-
+#include <fstream> 
 #include <sys/socket.h>
 #include <netdb.h>
 #include <arpa/inet.h>
@@ -16,12 +16,13 @@
 
 using namespace std; 
 
-void parseRequest(char buffer[40]);
+void parseRequest(char buffer[500]);
 string searchFile(char fileName[], int sock);
 void sendFile (FILE *file, int sock); 
 void send400(); 
-char store[30] = {0};
+char store[1000] = {0};
 int BR_flag = 0; 
+FILE *f;
 
 int main(int argc, char *argv[])
 {
@@ -75,6 +76,7 @@ int main(int argc, char *argv[])
 
     //Bind socket to address
     cout << "binding...";
+   
     b = bind(sockfd, servinfo->ai_addr, servinfo->ai_addrlen);
     if(b == -1){
       cout << "bind error\n"; 
@@ -104,14 +106,14 @@ int main(int argc, char *argv[])
   //Now we'd want to 'wait' for requests from the client! 
   
   bool isEnd = false; 
-  char buf[60] = {0};
+  char buf[500] = {0};
   
   stringstream ss; 
   cout << "> Receiving request:\n";
   while(!isEnd){
     memset(buf, '\0', sizeof(buf));
     
-    if(recv(sock02, buf, 60, 0) == -1){
+    if(recv(sock02, buf, 500, 0) == -1){
       perror("recv");
       return 5; 
     }
@@ -127,28 +129,30 @@ int main(int argc, char *argv[])
     //Now we need to search for the file 
     string res_msg;
     res_msg = searchFile(store,sock02);
-     if (send(sock02, res_msg.c_str(), 20, 0) == -1) {
+     if (send(sock02, res_msg.c_str(), 40, 0) == -1) {
       perror("send");
       return 6;
-    }
+    } 
+    sendFile(f,sock02);
     isEnd = true; //set loop to finish 
     if (ss.str() == "close\n")
       break;
     
     
   }
-    
+  close(sock02);
+  close(sockfd);
   cout << "EXIT\n";
   return 0;
 }
 
-void parseRequest(char buffer[60]){
+void parseRequest(char buffer[500]){
     char sample;
     int flag=0; 
     //cout << "Entered parseRequest.\n";
      //max size = 30 
     int count =0; 
-    for(int i=0; i < 60; i++){
+    for(int i=0; i < 500; i++){
       sample = buffer[i]; //take in a character from buf 
       
       //cout  << "|" << sample; 
@@ -175,39 +179,41 @@ void parseRequest(char buffer[60]){
 }
 
 string searchFile(char fileName[], int sock){
-  FILE *f;
+  
   string respCode; 
   //cout << "\"" << fileName << "\"" << endl;  
   f = fopen(fileName, "r"); //try to open file 
  
   if(!f){
     cout << "> Sending 404 Not Found\n";
-    respCode = "404 Not Found\n";
+    respCode = "HTTP/1.0 404 Not Found\r\n\r\n";
     f = fopen("404.html", "r"); //open the 'not found' file if you we get that error 
   } else if (BR_flag == 1){
     cout << "> Sending 400 Bad Request\n";
-    respCode = "400 Bad Request\n";
+    respCode = "HTTP/1.0 400 Bad Request\r\n\r\n";
     f = fopen("400.html", "r");
   } else {
     cout << "> File found. Sending 200 OK\n"; 
-    respCode = "200 OK\n";
+    respCode = "HTTP/1.0 200 OK\r\n\r\n";
     //call sendFile function 
     
   }
-  sendFile(f,sock);
+  
   return respCode;
+  
 }
 
-char buffer[1000]; //will store contents of the html file 
+char buffer[500]; //will store contents of the html file 
 void sendFile (FILE *file,int sock){
   int i =0;
+  
   while(!feof(file)){
     buffer[i] = fgetc(file); 
     i++; 
   }
   //Now buffer has the file.
   //cout << "> Sending file\n";
-  int s = send(sock, buffer, 1000, 0);
+  int s = send(sock, buffer, 500, 0);
   if(s == -1){
     perror("send");
   }
