@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
        if(lAnsw[0] == 'y'){ 
             //set all request fields 
             
-            cout << "URL: ";
+            cout << "Filename: ";
             cin >> parsed_url; cout << endl;   
             insertChar(parsed_url);
        }
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     cout << "Do you want to make another request?(yes/no)\n"; 
     cin >> lAnsw; 
     sss = send(sock02, lAnsw,1,0); //send the answer to server 
-    //cout << "Sending "<< lAnsw << " message to server\n";
+   // cout << "Sending "<< lAnsw << " message to server\n";
     if(sss == -1){
         perror("send");
     }

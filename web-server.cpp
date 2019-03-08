@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
   }
         
   cout << "Host name -> "<< hostName <<" | Port -> " << port << " | File Directory -> "<< file_dir << endl << endl;
+  //Address/port configuration 
   const char *portCon = port.c_str(); 
   int sockfd,sock02; 
   int b; 
@@ -54,17 +55,17 @@ int main(int argc, char *argv[])
   struct addrinfo hints;
   struct addrinfo *servinfo;  // will point to the results
 
-  memset(&hints, 0, sizeof hints); // make sure the struct is empty
+  memset(&hints, 0, sizeof hints); // empty the struct 
   hints.ai_family = AF_INET;     //set ipv4 
   hints.ai_socktype = SOCK_STREAM; //tcp
-  hints.ai_flags = AI_PASSIVE;     // fill in my IP for me
+  hints.ai_flags = AI_PASSIVE;     // auto set IP 
     //Get address for specific port 
     cout << "> Acquiring address info...";
     if ((status = getaddrinfo(NULL, portCon, &hints, &servinfo)) != 0) {
       fprintf(stderr, "getaddrinfo error: %s\n", gai_strerror(status));
       exit(1);
     }
-    //Get socket 
+    //Create socket 
     cout << "creating socket...";
     sockfd = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol);
     if(sockfd == -1){
@@ -89,6 +90,10 @@ int main(int argc, char *argv[])
       exit(1);
     }
 
+    
+    //create a fork to handle multiple concurrent clients 
+    fork();
+
     //accept incoming connection 
     struct sockaddr_storage incom_addr; 
     socklen_t addr_size; 
@@ -107,15 +112,16 @@ int main(int argc, char *argv[])
   
   stringstream ss; 
   cout << "> Receiving request:\n";
-  while(!isEnd){
+  while(!isEnd){ //keep looping until ALL clients terminate their connection 
+    BR_flag = 0; 
     memset(buf, '\0', sizeof(buf));
-    cout << "Server about to receive request.\n";
+    //cout << "Server about to receive request.\n";
 
     if(recv(sock02, buf, 60, 0) == -1){
       perror("recv");
       return 5; 
     }
-    cout << "Server just received request\n";
+    //cout << "Server just received request\n";
     ss << buf << endl; 
     cout << buf << endl; 
     //Need to parse the request. Get method, URL, Version,  IP
@@ -127,7 +133,7 @@ int main(int argc, char *argv[])
 
     //Now we need to search for the file 
     string res_msg;
-    res_msg = searchFile(store,sock02);
+    res_msg = searchFile(store,sock02); //search for the specified file, returning the corresponding response message 
      if (send(sock02, res_msg.c_str(), 20, 0) == -1) {
       perror("send");
       return 6;
@@ -144,18 +150,19 @@ int main(int argc, char *argv[])
       perror("recv");
     }
     if(rmsg[0] == 'n'){
-      cout << "Terminating connnection\n";
+      cout << "Terminating connnection\n"; //if the client wants to, terminate their connection 
       isEnd = true;
     }
-     //set loop to finish 
+     //reset buffer 
      memset(buffer,'\0',sizeof(buffer));
+     memset(store, '\0', sizeof(store));
   }
     
   cout << "EXIT\n";
   return 0;
 }
 
-void parseRequest(char parseBuffer[60]){
+void parseRequest(char parseBuffer[60]){ //splits the request and stores the file name in 'store' 
     char sample;
     int flag=0; 
     //cout << "Entered parseRequest.\n";
@@ -174,20 +181,23 @@ void parseRequest(char parseBuffer[60]){
           //cout << "-" << store[count]; 
           count++; 
         }
-      if(parseBuffer[0] != 'G' || parseBuffer[1] != 'E' || parseBuffer[2] != 'T' || parseBuffer[3] != ' '){
-          //Since we only need to do GET, make sure this is what is said
-          BR_flag = 1; 
-        }
+      
       }
       //since we know we only need GET, ignore the first three chars
       if(sample == '/' && parseBuffer[i-1] == ' '){ //if we encounter empty space 
         //now we know the next thing will be the directory 
         flag = 1; 
       }
+      if(parseBuffer[i] == 'H' && parseBuffer[i+1] == 'T' && parseBuffer[i+2] == 'T' && parseBuffer[i+3] == 'P'){
+          //cout << parseBuffer[i] << parseBuffer[i+1] << parseBuffer[i+2] << parseBuffer[i+3] << parseBuffer[i+4] << endl;  
+          if(parseBuffer[i+7] == '1'){ //then we have requested http 1.1 
+            BR_flag = 1; 
+          }
+      }
     }
 }
 
-string searchFile(char fileName[], int sock){
+string searchFile(char fileName[], int sock){ //opens the required file based on the request and then set a corresponding response code 
   FILE *f;
   string respCode; 
   //cout << "\"" << fileName << "\"" << endl;  
