@@ -21,6 +21,7 @@ using namespace std;
 
 #define MAXDATASIZE 100 // max number of bytes we can get at once 
 
+void insertChar(char word[]);
 void writeTo(char input[]);
 void parseURL(string url); 
 char host[20];
@@ -36,6 +37,7 @@ int main(int argc, char *argv[])
     cout << "\n---CLIENT---\nSearch URL: " << URL << endl; 
     parseURL(URL);
     int portNum;
+    int sss; 
     portNum = atoi(port); //convert to integer 
     int sock02 = socket(AF_INET, SOCK_STREAM, 0);
     struct sockaddr_in servAddr; 
@@ -54,34 +56,38 @@ int main(int argc, char *argv[])
     //Now we need to create the HTTP Request and send it to the server
     //set host, etc.  
     //call buildRequest to form the message into a string as show: 
-   
-    //for(int ii = 0; ii < argc; ii++){
-        //loop through input arguements 
-        
-    //}
-
-    cout << "Creating HTTP Request...\n";
-    httpRequest req; 
-    req.setMethod("GET");
-    req.setHost(host);
-    req.setUri(parsed_url);
-    int answ; 
-    cout << "Set HTTP Version - Enter 1 or 0 - (Setting HTTP/1.1 will return bad request.)\n";
-    cin >> answ; 
-    if(answ == 1){
-        req.setVer("HTTP/1.1");
-    } else {
-        req.setVer("HTTP/1.0");
-    }
-    
-    
-    req.createRequest();
+   char lAnsw[6] = {0}; 
+   char buffer[500]; 
+    char msg[40]; 
+     int answ; 
+    int reqLen =0, res=0, sent=0,res2=0;
+   httpRequest req;
+   cout << "Creating HTTP Request...\n";
+   do {
+       if(lAnsw[0] == 'y'){ 
+            //set all request fields 
+            
+            cout << "URL: ";
+            cin >> parsed_url; cout << endl;   
+            insertChar(parsed_url);
+       }
+        req.setHost(host); 
+        req.setMethod("GET");
+        req.setUri(parsed_url);
+       
+        cout << "Set HTTP Version - Enter 1 or 0 - (Setting HTTP/1.1 will return bad request.)\n";
+        cin >> answ; 
+        if(answ == 1){
+            req.setVer("HTTP/1.1");
+        } else {
+            req.setVer("HTTP/1.0");
+        }
+         req.createRequest();
     cout << "==================\n";
     //send that to the server 
-    int reqLen =0, res=0, sent=0,res2=0;
+    
     reqLen = req.getLength();
-    char buffer[10054]; 
-    char msg[40]; 
+    
     do{
         res = send(sock02, req.convert().c_str(),(reqLen - sent),0);
         sent = sent + res; 
@@ -91,8 +97,11 @@ int main(int argc, char *argv[])
     if (res2 > 0){
         cout << msg; 
     }
-     cout << "---FILE---\n";
-    res = recv(sock02, buffer, 10054,0);
+    for(int ll = 0; ll<40;ll++){
+        msg[ll] = '\0'; 
+    }
+    // cout << "---FILE---\n";
+    res = recv(sock02, buffer, 500,0);
     if(res > 0){
         cout << buffer; 
     } 
@@ -104,8 +113,23 @@ int main(int argc, char *argv[])
     //Now buffer has the file contents! 
     //Need to write to the file 
     writeTo(buffer);
+    
+    
+    cout << "Do you want to make another request?(yes/no)\n"; 
+    cin >> lAnsw; 
+    sss = send(sock02, lAnsw,1,0); //send the answer to server 
+    cout << "Sending "<< lAnsw << " message to server\n";
+    if(sss == -1){
+        perror("send");
+    }
    
-
+    cout << "Resetting Buffer array...\n";
+    for(int ii =0;ii<500;ii++){
+        buffer[ii] = '\0'; //RESET ARRAY
+    }
+    cout << "Second time " << buffer << endl; 
+   } while(lAnsw[0] == 'y');
+    
     close(sock02);
 }
 
@@ -131,7 +155,7 @@ void parseURL(string url){
                  //block out the ':' 
             }
         } 
-        if(i > (6+j+1) && p == false){
+        if(i > (7+j) && p == false){
             port[k] = sample; 
             //cout << "~" << port[k]; 
             k++; 
@@ -144,7 +168,7 @@ void parseURL(string url){
                 
             }
         }
-        if(i > (7+j+k+1) && u == false){
+        if(i > (8+j+k) && u == false){
             parsed_url[l] = sample; 
             //cout << "+" << parsed_url[l]; 
             l++; 
@@ -168,4 +192,22 @@ void writeTo(char input[]){
     recFile.open("receiveFile.html", std::ofstream::out | std::ofstream::trunc);
     recFile << input; 
     recFile.close(); 
+}
+
+void insertChar(char word[]){
+    char sample; 
+    int count=0; 
+    sample = word[count];
+    while(sample != '\0') {
+        sample = word[count]; 
+        //cout << count; 
+        count++; 
+    } 
+    //cout << "Size of word " << count << endl; 
+    for(int i = count-1; i > -1;i--){
+        sample = word[i]; 
+        word[i+1] = sample; //move over 
+    }
+    word[0] = '/';
+    //cout << word << endl; 
 }
