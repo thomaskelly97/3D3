@@ -109,11 +109,13 @@ int main(int argc, char *argv[])
   cout << "> Receiving request:\n";
   while(!isEnd){
     memset(buf, '\0', sizeof(buf));
-    
+    cout << "Server about to receive request.\n";
+
     if(recv(sock02, buf, 60, 0) == -1){
       perror("recv");
       return 5; 
     }
+    cout << "Server just received request\n";
     ss << buf << endl; 
     cout << buf << endl; 
     //Need to parse the request. Get method, URL, Version,  IP
@@ -130,23 +132,23 @@ int main(int argc, char *argv[])
       perror("send");
       return 6;
     }
-    //RESET THE ARRAY
+    
     
     if (ss.str() == "close\n")
       break;
 
     char rmsg[6] = {0}; 
     int rrr = recv(sock02, rmsg, 1, 0);
-    cout << "Receiving " << rmsg << " from client...\n";
+    //cout << "Receiving " << rmsg << " from client...\n";
     if(rrr == -1){
-      perror("receive");
+      perror("recv");
     }
     if(rmsg[0] == 'n'){
       cout << "Terminating connnection\n";
       isEnd = true;
     }
      //set loop to finish 
-     
+     memset(buffer,'\0',sizeof(buffer));
   }
     
   cout << "EXIT\n";
@@ -206,9 +208,7 @@ string searchFile(char fileName[], int sock){
     
   }
   //RESET BUFFER 
-  for(int j =0; j<500;j++){
-      buffer[j] = '\0'; 
-    }
+  
   sendFile(f,sock);
   return respCode;
 }

@@ -60,10 +60,11 @@ int main(int argc, char *argv[])
    char buffer[500]; 
     char msg[40]; 
      int answ; 
-    int reqLen =0, res=0, sent=0,res2=0;
+    int reqLen =0, res=0, sent=0, res2=0;
    httpRequest req;
    cout << "Creating HTTP Request...\n";
    do {
+        reqLen =0; res=0; sent=0; res2=0;
        if(lAnsw[0] == 'y'){ 
             //set all request fields 
             
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
         } else {
             req.setVer("HTTP/1.0");
         }
-         req.createRequest();
+        req.createRequest();
     cout << "==================\n";
     //send that to the server 
     
@@ -97,9 +98,7 @@ int main(int argc, char *argv[])
     if (res2 > 0){
         cout << msg; 
     }
-    for(int ll = 0; ll<40;ll++){
-        msg[ll] = '\0'; 
-    }
+    
     // cout << "---FILE---\n";
     res = recv(sock02, buffer, 500,0);
     if(res > 0){
@@ -118,16 +117,14 @@ int main(int argc, char *argv[])
     cout << "Do you want to make another request?(yes/no)\n"; 
     cin >> lAnsw; 
     sss = send(sock02, lAnsw,1,0); //send the answer to server 
-    cout << "Sending "<< lAnsw << " message to server\n";
+    //cout << "Sending "<< lAnsw << " message to server\n";
     if(sss == -1){
         perror("send");
     }
    
-    cout << "Resetting Buffer array...\n";
-    for(int ii =0;ii<500;ii++){
-        buffer[ii] = '\0'; //RESET ARRAY
-    }
-    cout << "Second time " << buffer << endl; 
+    //cout << "Resetting Buffer array...\n";
+    memset(buffer, '\0', sizeof(buffer));
+    //cout << "Second time " << buffer << endl; 
    } while(lAnsw[0] == 'y');
     
     close(sock02);
