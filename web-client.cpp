@@ -1,3 +1,7 @@
+//Thomas Kelly 
+//Student Number 16323455 
+//This program was written largely through vagrant on windows, but also by using a linux machine at times
+
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
@@ -17,9 +21,6 @@
 using namespace std; 
 
 
-#define PORT "3490" // the port client will be connecting to 
-
-#define MAXDATASIZE 100 // max number of bytes we can get at once 
 
 void insertChar(char word[]);
 void writeTo(char input[]);
@@ -30,19 +31,20 @@ char parsed_url[20];
 
 int main(int argc, char *argv[])
 {    
-    string URL = {"http://localhost:4000/index.html"}; //default 
+    string URL = {"http://localhost:4000/index.html"}; //default input 
     if (argc > 1){
         URL = argv[1]; 
     }
-    cout << "\n---CLIENT---\nSearch URL: " << URL << endl; 
+    cout << "Thomas Kelly - 16323455\n---CLIENT---\nSearch URL: " << URL << endl; 
     parseURL(URL);
     int portNum;
     int sss; 
     portNum = atoi(port); //convert to integer 
-    int sock02 = socket(AF_INET, SOCK_STREAM, 0);
+    int sock02 = socket(AF_INET, SOCK_STREAM, 0); //create socket 
+    //address settings 
     struct sockaddr_in servAddr; 
-    servAddr.sin_family = AF_INET;
-    servAddr.sin_port = htons(portNum);     // short, network byte order
+    servAddr.sin_family = AF_INET; 
+    servAddr.sin_port = htons(portNum);     
     servAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
     memset(servAddr.sin_zero, '\0', sizeof(servAddr.sin_zero));
 
@@ -55,23 +57,22 @@ int main(int argc, char *argv[])
 
     //Now we need to create the HTTP Request and send it to the server
     //set host, etc.  
-    //call buildRequest to form the message into a string as show: 
-   char lAnsw[6] = {0}; 
-   char buffer[500]; 
+    //call buildRequest to form the message into a string a 
+    char lAnsw[6] = {0}; 
+    char buffer[500]; 
     char msg[40]; 
-     int answ; 
+    int answ; 
     int reqLen =0, res=0, sent=0, res2=0;
    httpRequest req;
    cout << "Creating HTTP Request...\n";
    do {
         reqLen =0; res=0; sent=0; res2=0;
        if(lAnsw[0] == 'y'){ 
-            //set all request fields 
-            
             cout << "Filename: ";
             cin >> parsed_url; cout << endl;   
             insertChar(parsed_url);
        }
+       //set all request fields 
         req.setHost(host); 
         req.setMethod("GET");
         req.setUri(parsed_url);
@@ -109,22 +110,22 @@ int main(int argc, char *argv[])
     } else {
         cout << "recv failed\n";
     }
+
     //Now buffer has the file contents! 
     //Need to write to the file 
-    writeTo(buffer);
-    
+    writeTo(buffer); //this writes the response to a file 
     
     cout << "Do you want to make another request?(yes/no)\n"; 
     cin >> lAnsw; 
     sss = send(sock02, lAnsw,1,0); //send the answer to server 
-   // cout << "Sending "<< lAnsw << " message to server\n";
+   
     if(sss == -1){
         perror("send");
     }
    
     //cout << "Resetting Buffer array...\n";
     memset(buffer, '\0', sizeof(buffer));
-    //cout << "Second time " << buffer << endl; 
+    //loop back around, only if the user has opted to 
    } while(lAnsw[0] == 'y');
     
     close(sock02);

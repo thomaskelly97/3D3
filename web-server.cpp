@@ -27,11 +27,12 @@ int BR_flag = 0;
 int main(int argc, char *argv[])
 {
   //DEFAULT SETTINGS 
-  cout << "\n---SERVER---\n";
+  cout << "Thomas Kelly - 16323455\n---SERVER---\n";
   string hostName, port, file_dir; 
   hostName = "localhost";
   port = "4000"; 
   file_dir = "."; 
+
   if(argc > 1){
       cout << ">> Custom settings\n";
       hostName = argv[1];
@@ -40,8 +41,9 @@ int main(int argc, char *argv[])
   } else {
       cout << ">> Default settings\n";
   }
-        
+  //Tell user basic info     
   cout << "Host name -> "<< hostName <<" | Port -> " << port << " | File Directory -> "<< file_dir << endl << endl;
+
   //Address/port configuration 
   const char *portCon = port.c_str(); 
   int sockfd,sock02; 
@@ -80,7 +82,7 @@ int main(int argc, char *argv[])
       cout << "bind error\n"; 
       exit(1);
     }
-  sleep(1);
+    sleep(1);//wait to allow bind. Thinking this might help solve the bind error...
     //Listen for incoming connect
     int lis; 
     cout<<"listening...\n";
@@ -107,28 +109,28 @@ int main(int argc, char *argv[])
 
   //Now we'd want to 'wait' for requests from the client! 
   
-  bool isEnd = false; 
+  bool isEnd = false; //intialise loop(connection) to stay open 
   char buf[60] = {0};
   
   stringstream ss; 
-  cout << "> Receiving request:\n";
+  
   while(!isEnd){ //keep looping until ALL clients terminate their connection 
     BR_flag = 0; 
     memset(buf, '\0', sizeof(buf));
+    cout << "> Receiving request:\n";
     //cout << "Server about to receive request.\n";
-
     if(recv(sock02, buf, 60, 0) == -1){
       perror("recv");
       return 5; 
     }
     //cout << "Server just received request\n";
+
     ss << buf << endl; 
-    cout << buf << endl; 
+    cout << buf << endl; //printing request 
+
     //Need to parse the request. Get method, URL, Version,  IP
-    
     parseRequest(buf);
     //now store array has the file location we want 
-    //ss << store << endl; 
     cout << "> Request parsed, searching for file:"<< store << endl;
 
     //Now we need to search for the file 
@@ -153,7 +155,7 @@ int main(int argc, char *argv[])
       cout << "Terminating connnection\n"; //if the client wants to, terminate their connection 
       isEnd = true;
     }
-     //reset buffer 
+     //reset buffers 
      memset(buffer,'\0',sizeof(buffer));
      memset(store, '\0', sizeof(store));
   }
@@ -171,14 +173,14 @@ void parseRequest(char parseBuffer[60]){ //splits the request and stores the fil
     for(int i=0; i < 60; i++){
       sample = parseBuffer[i]; //take in a character from buf 
       
-      //cout  << "|" << sample; 
+      
       if(flag == 1){
         if(sample == ' '){
           flag = 0; 
         } 
         else {
           store[count] = sample; 
-          //cout << "-" << store[count]; 
+          
           count++; 
         }
       
@@ -214,12 +216,10 @@ string searchFile(char fileName[], int sock){ //opens the required file based on
   } else {
     cout << "> File found. Sending 200 OK\n"; 
     respCode = "200 OK\n";
-    //call sendFile function 
-    
-  }
-  //RESET BUFFER 
-  
+  } 
+  //call sendFile function 
   sendFile(f,sock);
+  //we now have the response code and corresponding file. 
   return respCode;
 }
 
@@ -231,7 +231,7 @@ void sendFile (FILE *file,int sock){
     i++; 
   }
   //Now buffer has the file.
-  //cout << "> Sending file\n";
+ 
   int s = send(sock, buffer, 500, 0);
   if(s == -1){
     perror("send");
