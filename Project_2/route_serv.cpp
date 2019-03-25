@@ -19,9 +19,10 @@ int main(int argc, char *argv[])
    int portNum = 4000; 
     char recvmsg[100];
     char sendmsg[100] = "Server Response";  
-    int r;
-    socklen_t *len; 
+    int r, s;
     struct sockaddr_in servAddr, cliAddr; 
+    socklen_t len = sizeof(cliAddr); 
+    
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
 
    // portNum = atoi(portNum); //convert to integer 
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
 
     servAddr.sin_family = AF_INET;
     servAddr.sin_port = htons(portNum);     // short, network byte order
-    servAddr.sin_addr.s_addr = htonl(INADDR_ANY); 
+    servAddr.sin_addr.s_addr = INADDR_ANY;
 
     if(bind(sock, (const struct sockaddr *)&servAddr, sizeof(servAddr)) <0){
         perror("bind error");
@@ -38,14 +39,15 @@ int main(int argc, char *argv[])
     }
     cout << "Server is ready to receive\n";
 
-    
+    //SERVER RECEIVE 
     r = recvfrom(sock, (char *)recvmsg, 100, MSG_WAITALL, 
-                (struct sockaddr *) &cliAddr, len);
+                (struct sockaddr *) &cliAddr, &len);
     recvmsg[r] = '\0'; 
     cout << "Receiving Message.. " << recvmsg << endl << "send response\n"; 
-    sendto(sock, (char *)sendmsg, 100, MSG_CONFIRM, (sockaddr *)&cliAddr, sizeof(cliAddr));
-    
+
+    //SERVER SEND RESPONSE 
+    s = sendto(sock, sendmsg, 100, 0, (struct sockaddr *) &cliAddr, len);
+    //s = sendto(sock, sendmsg, 100, MSG_CONFIRM, (const struct sockaddr *) &servAddr, sizeof(servAddr));
 
     close(sock);
 }
-
