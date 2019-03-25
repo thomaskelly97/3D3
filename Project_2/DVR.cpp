@@ -16,17 +16,17 @@ using namespace std;
  
 int main(int argc, char **argv)
 {
-    int graph[50][50];
+    int graph[15][15];
     int i,j,k,t;
-    int nn;
+    int numNodes;
  
     cout<<"\n Enter Number of Nodes:";
-    cin>>nn;
+    cin>>numNodes;
  
     /* Initialize graph*/
-    for (i=0;i<nn;i++)
+    for (i=0;i<numNodes;i++)
     {
-        for(j=0;j<nn;j++)
+        for(j=0;j<numNodes;j++)
         {
             graph[i][j]=-1;
         }
@@ -36,9 +36,9 @@ int main(int argc, char **argv)
     char ch[7]={'A','B','C','D','E','F','G'};
  
     /* Get input */
-    for (i=0;i<nn;i++)
+    for (i=0;i<numNodes;i++)
     {
-        for(j=0;j<nn;j++)
+        for(j=0;j<numNodes;j++)
         {
             if(i==j)
             {
@@ -54,10 +54,10 @@ int main(int argc, char **argv)
     }
  
     /* Initializing via */
-    int via[50][50];
-    for (i=0;i<nn;i++)
+    int via[15][15];
+    for (i=0;i<numNodes;i++)
     {
-        for(j=0;j<nn;j++)
+        for(j=0;j<numNodes;j++)
         {
             via[i][j]=-1;
         }
@@ -65,23 +65,23 @@ int main(int argc, char **argv)
  
     cout<<"\n After Initialization";
     /* Display table initialization */
-    for (i=0;i<nn;i++)
+    for (i=0;i<numNodes;i++)
     {
         cout<<"\n"<<ch[i]<<" Table";
         cout<<"\nNode\tDist\tVia";
-        for(j=0;j<nn;j++)
+        for(j=0;j<numNodes;j++)
         {
             cout<<"\n"<<ch[j]<<"\t"<<graph[i][j]<<"\t"<<via[i][j];
         }
     }
  
     //sharing table
-    int sh[50][50][50];
-    for(i=0;i<nn;i++)
+    int sh[15][15][15];
+    for(i=0;i<numNodes;i++)
     {
-        for(j=0;j<nn;j++)
+        for(j=0;j<numNodes;j++)
         {
-            for (k=0;k<nn;k++)
+            for (k=0;k<numNodes;k++)
             {
                 /* Check if edge is present or not*/
                 if((graph[i][j]>-1)&&(graph[j][k]>-1))
@@ -95,26 +95,12 @@ int main(int argc, char **argv)
             }
         }
     }
- 
-    /*displaying shared table */
-    for(i=0;i<nn;i++)
-    {
-        cout<<"\n\n For "<<ch[i];
-        for (j=0;j<nn;j++)
-        {
-            cout<<"\n From "<<ch[j];
-            for(k=0;k<nn;k++)
-            {
-                cout<<"\n "<<ch[k]<<" "<<sh[i][j][k];
-            }
-        }
-    }
-     
+   
     /* Updating */
-    int final[50][50];
-    for(i=0;i<nn;i++)
+    int final[15][15];
+    for(i=0;i<numNodes;i++)
     {
-        for(j=0;j<nn;j++)
+        for(j=0;j<numNodes;j++)
         {
             /* Copy initial value from input graph*/
             final[i][j]=graph[i][j];
@@ -122,7 +108,7 @@ int main(int argc, char **argv)
              
             /*Update them*/
             /* Check condition a - b - c */
-            for(k=0;k<nn;k++)
+            for(k=0;k<numNodes;k++)
             {
                  
                 if((final[i][j]>sh[i][k][j]) || (final[i][j] == -1))
@@ -134,14 +120,11 @@ int main(int argc, char **argv)
                     }
                 }
             }
-            /* After considering three vertex if final not found 
-                consider 4th
-                a- b- c- d
-            */
+
  
             if(final[i][j]==-1)
             {
-                for(k=0;k<nn;k++)
+                for(k=0;k<numNodes;k++)
                 {
  
                     if((final[i][k]!=-1)&&(final[k][j]!=-1))
@@ -163,11 +146,11 @@ int main(int argc, char **argv)
  
     cout<<"\n After Update :";
     /* Display table Updation */
-    for (i=0;i<nn;i++)
+    for (i=0;i<numNodes;i++)
     {
         cout<<"\n"<<ch[i]<<" Table";
         cout<<"\nNode\tDist\tVia";
-        for(j=0;j<nn;j++)
+        for(j=0;j<numNodes;j++)
         {
             cout<<"\n"<<ch[j]<<"\t"<<final[i][j]<<"\t";
             if(i==via[i][j])

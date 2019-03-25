@@ -22,9 +22,11 @@ int main(int argc, char *argv[])
     int r, s,behav;
     struct sockaddr_in servAddr, cliAddr; 
     socklen_t len = sizeof(cliAddr); 
-    int sock = socket(AF_INET, SOCK_DGRAM, 0);
-    int sockc = socket(AF_INET, SOCK_DGRAM, 0);
-
+#include <conio.h>, SOCK_DGRAM, 0);
+#include <conio.h>T, SOCK_DGRAM, 0);
+#include <conio.h>
+    //FOR NOW, BEHAV INDICATES HOW THE ROUTER SHOULD BEHAVE
+    //Enter 0 in the command line for 'server', enter 1 for a 'client'
     behav = atoi(argv[1]); //get arguement 
 
    // portNum = atoi(portNum); //convert to integer 
