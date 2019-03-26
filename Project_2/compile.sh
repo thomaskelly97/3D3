@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 
-rm my-router
+
+rm run 
+rm test
 make

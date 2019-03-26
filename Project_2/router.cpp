@@ -65,7 +65,7 @@ int router::getB(){
 
 void router::Rsend(char msg[100]){    
     //CLIENT SEND 
-    cout << "entered send\n";
+    cout << "SEND AND RECEIVE RESPONSE (client behaviour)\n";
     char recvmsg[100]; //receive buffer 
     int s,r; 
     
@@ -73,7 +73,7 @@ void router::Rsend(char msg[100]){
     if(s == -1){
         perror("send error");
     }
-    cout << "Message sent\n"; 
+    cout << "Message sent: " << msg << endl; 
 
         //CLIENT RECEIVE 
     r = recvfrom((this->sockc), (char *)recvmsg, 100, MSG_WAITALL, ( struct sockaddr *)(this->pCli), this->plen);
@@ -85,12 +85,12 @@ void router::Rsend(char msg[100]){
 
 void router::Rrecv(){
     char recvmsg[100]; 
-    char sendmsg[100] = "server response\n";
+    char sendmsg[100] = "this is the server response\n";
     int r,s; 
     if(bind(this->socks, (const struct sockaddr *)(this->pSer), sizeof(this->servAddr)) <0){
         perror("bind error"); 
     }
-    cout << "RECEIVE AND RESPOND\n";
+    cout << "RECEIVE AND RESPOND (server behaviour)\n";
 
     //SERVER RECEIVE 
     r = recvfrom(this->socks, (char *)recvmsg, 100, MSG_WAITALL, 
@@ -98,7 +98,7 @@ void router::Rrecv(){
     if(r == -1){
         perror("recv error");
     }
-    cout << "Incoming Msg:" << recvmsg << endl << "sending response..\n"; 
+    cout << "Receiving Msg:" << recvmsg << endl << "sending response..\n"; 
          
 
     //SERVER SEND RESPONSE 

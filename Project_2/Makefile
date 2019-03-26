@@ -4,7 +4,7 @@ CXXFLAGS= -g -Wall -pthread -std=c++11 $(CXXOPTIMIZE)
 USERID=EDIT_MAKE_FILE
 CLASSES=
 
-all: my-router 
+all: my-router router test_router
 
 my-router: $(CLASSES)
 	$(CXX) -o $@ $^ $(CXXFLAGS) $@.cpp
