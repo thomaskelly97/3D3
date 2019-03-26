@@ -18,14 +18,9 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {    
-    router r1; 
-    char trymsg[100] = "hello from r1";
+    router r2; 
+    r2.initialise('B', 10000, 0);
+    r2.Rrecv();
 
-  
-    
-    r1.initialise('A', 10000, 1);
-   // r2.initialise('B', 10000, 0);
-    r1.Rsend(trymsg);
-    //r2.Rrecv();
     return 0; 
 }
