@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
     char sendmsg[100] = "Server Response";  
     int r, s,behav;
     struct sockaddr_in servAddr, cliAddr; 
+    int sockc,sock; 
     socklen_t len = sizeof(cliAddr); 
-#include <conio.h>, SOCK_DGRAM, 0);
-#include <conio.h>T, SOCK_DGRAM, 0);
-#include <conio.h>
+    sockc = socket(AF_INET, SOCK_DGRAM, 0);
+    sock = socket(AF_INET, SOCK_DGRAM, 0);
     //FOR NOW, BEHAV INDICATES HOW THE ROUTER SHOULD BEHAVE
     //Enter 0 in the command line for 'server', enter 1 for a 'client'
     behav = atoi(argv[1]); //get arguement 
