@@ -19,7 +19,7 @@ router::router(){ //default constructor
     this->behaviour = 0; 
 }
 
-void router::initialise(char n, int p, int b){
+void router::initialise(char n, int p, int b){ // initialises address settings 
     this->name = n;
     this->port = p;
     this->behaviour = b; 
@@ -36,7 +36,7 @@ void router::initialise(char n, int p, int b){
     this->socks = socket(AF_INET, SOCK_DGRAM, 0);
 
     cout << "Initialised router. Port:" << this->port << endl << "Name: " << n <<
-    " - behaving as a " << b << "\n";
+    " - behaving as a " << b << "\n"; //debug info 
 }
 
 //SETTERS 

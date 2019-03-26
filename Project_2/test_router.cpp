@@ -18,6 +18,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {    
+    //Test router. Set up as type server 
     router r2; 
     r2.initialise('B', 10000, 0);
     r2.Rrecv();
