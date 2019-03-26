@@ -1,11 +1,11 @@
 
-1. Routers can now be instantiated as objects 
-2. the main my-router file instantiates a sample client r1 
-3. i included a test_router.cpp file just for testing, which instantiates a router r2 as a server. 
+1. Routers can now be instantiated as objects, using router.cpp and router.h 
+2. the main my-router file instantiates a sample router r1 to client type as an example 
+3. i included a test_router.cpp file just for testing, which instantiates another router r2 as a 'server'. 
 4. Use the commands: 
 g++ router.cpp my-router.cpp -o client ....to set up the my-router executable 
 g++ router.cpp test_router.cpp -o server ...to set up the test_router executable 
 5. Run the server first, then the client. ./server ./client 
 
-Was thinking if we should intialise all routers as servers intially. Then when a router decides it
-wants to send something, (either by user input or hardcoding) just change that particular routers functionality type to that of a 'client'. Do this by using the 'routerName.setB(1)' method. After it sends its data, change it back to a server type incase it needs to receive from another router. 
+Was thinking we should intialise all routers as servers intially. Then when a router decides it
+wants to send something, (either by user input, DV updates or hardcoding) just change that particular routers functionality type to that of a 'client'. Do this by using the 'routerName.setB(1)' method. After it sends its data, change it back to a server type incase it needs to receive from another router. 
