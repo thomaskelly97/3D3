@@ -8,4 +8,9 @@ g++ router.cpp test_router.cpp -o server ...to set up the test_router executable
 5. Run the server first, then the client. ./server ./client 
 
 Was thinking we should intialise all routers as servers intially. Then when a router decides it
+<<<<<<< HEAD
 wants to send something, (either by user input, DV updates or hardcoding) just change that particular routers functionality type to that of a 'client'. Do this by using the 'routerName.setB(1)' method. After it sends its data, change it back to a server type incase it needs to receive from another router. 
+=======
+wants to send something, (either by user input, DV updates or hardcoding) just change that particular routers functionality type to that of a 'client'. 
+Do this by using the 'routerName.setB(1)' method. After it sends its data, change it back to a server type incase it needs to receive from another router. 
+>>>>>>> cc475a3b7ccb98afac45636e5e1c3a9b75843179
