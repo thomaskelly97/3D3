@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
-rm run 
-rm test
+rm my-router
+rm test_router
 make

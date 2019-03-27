@@ -1,13 +1,16 @@
 CXX=g++
 CXXOPTIMIZE= -O2
-CXXFLAGS= -g -Wall -pthread -std=c++11 $(CXXOPTIMIZE)
+CXXFLAGS= -g -Wall -pthread -std=c++11 
 USERID=EDIT_MAKE_FILE
 CLASSES=
 
-all: my-router router test_router
+all: my-router test_router
+
+test_router: $(CLASSES)
+	$(CXX)  $(CXXFLAGS) $@.cpp router.cpp -o $@ $^
 
 my-router: $(CLASSES)
-	$(CXX) -o $@ $^ $(CXXFLAGS) $@.cpp
+	$(CXX)  $(CXXFLAGS) $@.cpp router.cpp -o $@ $^
 
 
 
