@@ -35,8 +35,8 @@ void router::initialise(char n, int p, int b){ // initialises address settings
     this->sockc = socket(AF_INET, SOCK_DGRAM, 0);
     this->socks = socket(AF_INET, SOCK_DGRAM, 0);
 
-    cout << "Initialised router. Port:" << this->port << endl << "Name: " << n <<
-    " - behaving as a " << b << "\n"; //debug info 
+    cout << "\n\nInitialised router. Port:" << this->port << endl << "Name: " << n <<
+    " - behaving as a " << b << " - (0 denotes server behaviour, 1 for client)\n"; //debug info 
 }
 
 //SETTERS 
@@ -73,19 +73,19 @@ void router::Rsend(char msg[100]){
     if(s == -1){
         perror("send error");
     }
-    cout << "Message sent: " << msg << endl; 
+    cout << "Message sent -[ " << msg << " ]-" << endl; 
 
         //CLIENT RECEIVE 
     r = recvfrom((this->sockc), (char *)recvmsg, 100, MSG_WAITALL, ( struct sockaddr *)(this->pCli), this->plen);
     if(r == -1){
         perror("recv error");
     }
-    cout << "Response received: " << recvmsg << endl; 
+    cout << "Receiving Response: " << recvmsg << endl; 
 }
 
 void router::Rrecv(){
     char recvmsg[100]; 
-    char sendmsg[100] = "this is the server response\n";
+    char sendmsg[100] = "this is the server response";
     int r,s; 
     if(bind(this->socks, (const struct sockaddr *)(this->pSer), sizeof(this->servAddr)) <0){
         perror("bind error"); 
@@ -98,7 +98,7 @@ void router::Rrecv(){
     if(r == -1){
         perror("recv error");
     }
-    cout << "Receiving Msg:" << recvmsg << endl << "sending response..\n"; 
+    cout << "Receiving Msg -[ " << recvmsg << " ]- ...sending response -[ "<<sendmsg<< " ]-" << endl; 
          
 
     //SERVER SEND RESPONSE 

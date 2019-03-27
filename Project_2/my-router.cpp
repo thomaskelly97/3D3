@@ -19,14 +19,15 @@ using namespace std;
 int main(int argc, char *argv[])
 {    
     //we should instantiate ALL routers as 'servers' (0)
-    //if a router decides it wants to SEND data, simple change its type to a client
+    //if a router decides it wants to SEND data, simply change its type to a client
     //using setB(1) which will set its behaviour to client. This allows it to send data
+   
+
     router r1; //instantiate a router 
     char trymsg[100] = "hello from r1"; //use a sample message 
 
-    //router.intialise(name, port, behaviour) 
     r1.initialise('A', 10000, 1); // initialise router 'A' on port 10000 as a client type(1)
-    r1.Rsend(trymsg); //send try message 
+    r1.Rsend(trymsg); //send message 
     
     return 0; 
 }
