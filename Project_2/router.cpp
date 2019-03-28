@@ -13,6 +13,8 @@
 #include "router.h"
 using namespace std; 
 
+int bindCount = 0; 
+
 router::router(){ //default constructor 
     this->name = ' '; 
     this->port = 10000; 
@@ -51,6 +53,13 @@ void router::setB(int b){
     this->behaviour = b; 
 }
 
+void router::setServ(struct sockaddr_in servA){
+    this->servAddr = servA; 
+}
+
+void router::setCli(struct sockaddr_in cliA){
+    this->cliAddr = cliA; 
+}
 //GETTERS 
 char router::getN(){
     return this->name; 
@@ -87,8 +96,11 @@ void router::Rrecv(){
     char recvmsg[100]; 
     char sendmsg[100] = "this is the server response";
     int r,s; 
-    if(bind(this->socks, (const struct sockaddr *)(this->pSer), sizeof(this->servAddr)) <0){
-        perror("bind error"); 
+    if(bindCount < 1){ //only let the server bind once 
+        if(bind(this->socks, (const struct sockaddr *)(this->pSer), sizeof(this->servAddr)) <0){
+            perror("bind error"); 
+        }
+        bindCount++; 
     }
     cout << "RECEIVE AND RESPOND (server behaviour)\n";
 

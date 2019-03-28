@@ -13,21 +13,58 @@
 #include <fstream> 
 #include "router.h"
 
+#define size 3 //amount of nodes 
 
 using namespace std; 
 
+int abc(char c); 
 int main(int argc, char *argv[])
 {    
     //we should instantiate ALL routers as 'servers' (0)
     //if a router decides it wants to SEND data, simply change its type to a client
     //using setB(1) which will set its behaviour to client. This allows it to send data
-   
-
-    router r1; //instantiate a router 
-    char trymsg[100] = "hello from r1"; //use a sample message 
-
-    r1.initialise('A', 10000, 1); // initialise router 'A' on port 10000 as a client type(1)
-    r1.Rsend(trymsg); //send message 
+  
+    const struct sockaddr_in addr[2][size]; //address array, stores addresses of all routers.
+    //char abc[3] = {'A', 'B', 'C'}  
     
+
+    char trymsg[100] = "hello from r1"; //use a sample message 
+    char answ = 'n'; 
+
+    char src, dest;
+    int port;       //these parameters will be set by network class
+
+    router *r = new router(); 
+
+    r->initialise('A', 10000,0); // initialise router 'A' on port 10000 as a client type(1)
+    r->setCli(addr[1][abc(r->getN())];
+
+    while(1){
+        cout << "Do you want to send something?(y/n)\n"; 
+        cin >> answ; 
+        if(answ == 'y'){ //change to client 
+            cout << "Where do you want to send it? (A, B ,C)";
+            cin >> dest; 
+            for(int i=0; i<size;i++){
+                if(abc[i] == dest){
+                    //set the 'server' address 
+                    r->setServ(addr[0][i]);
+                }
+            }
+        } else { //stay as server 
+            r->Rrecv(); 
+        }
+        r->setB(0); //turn it back into a server. 
+    }
+
     return 0; 
+}
+
+int abc(char c){
+    char abc[3] = {'A', 'B', 'C'} 
+    for(int i=0; i<size; i++){
+        if(abc[i] == c){
+            return i; 
+        }
+    }
 }

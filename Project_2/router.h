@@ -37,6 +37,8 @@ public:
     void setName(char n);
     void setPort(int p);
     void setB(int b);
+    void setServ(struct sockaddr_in servA);
+    void setCli(struct sockaddr_in cliA);
     
     //GETTERS 
     char getN(); 
@@ -44,7 +46,7 @@ public:
     int getB(); 
     
     //METHODS 
-    void Rsend(char msg[100]);
+    void Rsend(char msg[100], const struct sockaddr_in * destAddr);
     void Rrecv(); 
 };
 
