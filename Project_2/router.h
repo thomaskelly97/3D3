@@ -23,6 +23,7 @@ class router
     int port; 
     int behaviour; //0=server, 1=client 
     int socks,sockc; //socket for server & client side of router 
+    int routerNum; 
     struct sockaddr_in servAddr, cliAddr; 
     const struct sockaddr_in * pSer = &servAddr;
     const struct sockaddr_in * pCli = &cliAddr;  
@@ -43,10 +44,11 @@ public:
     //GETTERS 
     char getN(); 
     int getP(); 
-    int getB(); 
+    int getB();
+    int getRN();  
     
     //METHODS 
-    void Rsend(char msg[100], const struct sockaddr_in * destAddr);
+    void Rsend(char msg[100]);
     void Rrecv(); 
 };
 

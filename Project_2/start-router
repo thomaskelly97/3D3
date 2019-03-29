@@ -1,0 +1,4 @@
+#!/bin/bash 
+
+xterm -e my-router 
+xterm -e my-router 

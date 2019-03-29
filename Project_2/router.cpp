@@ -14,6 +14,7 @@
 using namespace std; 
 
 int bindCount = 0; 
+ static int rNum =0;  
 
 router::router(){ //default constructor 
     this->name = ' '; 
@@ -22,10 +23,11 @@ router::router(){ //default constructor
 }
 
 void router::initialise(char n, int p, int b){ // initialises address settings 
+    this->routerNum = rNum; 
+    rNum++;  
     this->name = n;
     this->port = p;
     this->behaviour = b; 
-
     memset(&servAddr, 0, sizeof(servAddr));
     memset(&cliAddr, 0, sizeof(cliAddr));
 
@@ -71,7 +73,9 @@ int router::getP(){
 int router::getB(){
     return this->behaviour; 
 }
-
+int router::getRN(){
+    return this->routerNum; 
+}
 void router::Rsend(char msg[100]){    
     //CLIENT SEND 
     cout << "SEND AND RECEIVE RESPONSE (client behaviour)\n";
