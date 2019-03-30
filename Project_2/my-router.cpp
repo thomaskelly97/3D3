@@ -14,11 +14,13 @@
 #include <pthread.h>  
 #include "router.h"
 
-#define size 3 
+#define size 4 
 using namespace std; 
 int threadCount =0; 
 router *r = new router(); //instantiate a router 
 void * threadInit(void * x);
+//int nTable[size][size] = {0,1,1,0, 1,0,0,1, 1,0,0,1, 0,1,1,0}; 
+char abc[size] = {'A','B','C','D'};
 
 int charToInt(char c); 
 
@@ -41,6 +43,15 @@ int main(int argc, char *argv[])
     cout << "Router: " << src << "(" << srcNum << ")"<< "\nNeighbour: " << dest << "(" << dstNum << ")\n"; 
 
     r->initialise(src,port); // initialise router 'A' on port 10000 as a client type(1)
+    r->setNeighbours(srcNum);
+    cout << src << "'s neighbours: ";
+    for(int ii = 0; ii<size; ii++){
+        if(r->getANeighbour(ii) == 1){
+            cout << abc[ii] << " "; 
+        } 
+    }
+    
+    cout << endl; 
     pthread_create(&serverT, NULL, threadInit, &x);
     pthread_create(&clientT, NULL, threadInit, &x);
 
@@ -71,13 +82,11 @@ void * threadInit(void *x){
         //cout << "Client thread\n"; 
         clientInit();
     }
-     
-
     return NULL; 
 }
 
 int charToInt(char c){
-    char abc[size] = {'A','B','C'};
+    char abc[size] = {'A','B','C','D'};
     for (int i =0; i< size; i++){
         if(abc[i] == c){
             return i; 

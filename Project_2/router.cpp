@@ -13,15 +13,22 @@
 #include "router.h"
 using namespace std; 
 
+int nTable[size][size] = {0,1,1,0, 1,0,0,1, 1,0,0,1, 0,1,1,0}; 
+
 router::router(){ //default constructor 
     this->name = ' '; 
     this->port = 10000; 
-   
+    for(int i =0; i< size; i++){
+        this->neighbours[i] = 0; 
+    } 
 }
 
 void router::initialise(char n, int p){ // initialises address settings 
     this->name = n;
     this->port = p;
+    for(int i =0; i< size; i++){
+        this->neighbours[i] = 0; 
+    }
 
     memset(&servAddr, 0, sizeof(servAddr));
     memset(&cliAddr, 0, sizeof(cliAddr));
@@ -46,6 +53,18 @@ void router::setPort(int p){
     this->port = p; 
 }
 
+void router::setNeighbours(int source){
+    //char abc[4] = {'A','B','C','D'};
+    for(int i = 0; i<size; i++){
+        for(int j = 0; j< size ;j++){
+            if(source == i && nTable[source][j] == 1){
+                //found a neighbour 
+                this->neighbours[j] = 1; 
+                //cout << abc[j] << " is a neighbour.\n"; 
+            }
+        }
+    }
+}
 
 //GETTERS 
 char router::getN(){
@@ -54,6 +73,10 @@ char router::getN(){
 
 int router::getP(){
     return this->port; 
+}
+
+int router::getANeighbour(int index){
+    return this->neighbours[index]; 
 }
 
 
@@ -74,7 +97,7 @@ void router::Rsend(char msg[100]){
     if(r == -1){
         perror("recv error");
     }
-    cout << "Receiving Response: " << recvmsg << endl; 
+    cout << "Client receiving response: " << recvmsg << endl; 
 }
 
 void router::Rrecv(){
@@ -86,19 +109,20 @@ void router::Rrecv(){
         perror("bind error"); 
     }
     
-
+    while(1){
     //SERVER RECEIVE 
-    r = recvfrom(this->socks, (char *)recvmsg, 100, MSG_WAITALL, 
-                     (struct sockaddr *)(this->pCli), this->plen);
-    if(r == -1){
-        perror("recv error");
-    }
-    cout << "Receiving Msg -[ " << recvmsg << " ]- ...sending response -[ "<<sendmsg<< " ]-" << endl; 
-         
+        r = recvfrom(this->socks, (char *)recvmsg, 100, MSG_WAITALL, 
+                        (struct sockaddr *)(this->pCli), this->plen);
+        if(r == -1){
+            perror("recv error");
+        }
+        cout << "Server receives " << recvmsg << "...sending response "<<sendmsg<<  endl; 
+            
 
-    //SERVER SEND RESPONSE 
-    s = sendto(this->socks, sendmsg, 100, 0, (const struct sockaddr *)(this->pCli), this->len);
-    if(s == -1){
-        perror("send error");
+        //SERVER SEND RESPONSE 
+        s = sendto(this->socks, sendmsg, 100, 0, (const struct sockaddr *)(this->pCli), this->len);
+        if(s == -1){
+            perror("send error");
+        }
     }
 }

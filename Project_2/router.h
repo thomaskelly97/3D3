@@ -14,13 +14,15 @@
 #include <errno.h> 
 #include <unistd.h> 
 #include <vector> 
-
+#define size 4 
 using namespace std; 
 
 class router
 {
     char name; 
     int port;  
+    int neighbours[size]; 
+
     int socks,sockc; //socket for server & client side of router 
     struct sockaddr_in servAddr, cliAddr; 
     const struct sockaddr_in * pSer = &servAddr;
@@ -35,11 +37,12 @@ public:
     //SETTERS 
     void setName(char n);
     void setPort(int p);
- 
+    void setNeighbours(int source);
     
     //GETTERS 
     char getN(); 
     int getP(); 
+    int getANeighbour(int index);
 
     
     //METHODS 
