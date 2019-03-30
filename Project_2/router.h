@@ -20,8 +20,7 @@ using namespace std;
 class router
 {
     char name; 
-    int port; 
-    int behaviour; //0=server, 1=client 
+    int port;  
     int socks,sockc; //socket for server & client side of router 
     struct sockaddr_in servAddr, cliAddr; 
     const struct sockaddr_in * pSer = &servAddr;
@@ -32,16 +31,16 @@ class router
     
 public: 
     router(); //default constructor 
-    void initialise(char n, int p, int b);
+    void initialise(char n, int p);
     //SETTERS 
     void setName(char n);
     void setPort(int p);
-    void setB(int b);
+ 
     
     //GETTERS 
     char getN(); 
     int getP(); 
-    int getB(); 
+
     
     //METHODS 
     void Rsend(char msg[100]);

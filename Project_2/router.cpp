@@ -16,13 +16,12 @@ using namespace std;
 router::router(){ //default constructor 
     this->name = ' '; 
     this->port = 10000; 
-    this->behaviour = 0; 
+   
 }
 
-void router::initialise(char n, int p, int b){ // initialises address settings 
+void router::initialise(char n, int p){ // initialises address settings 
     this->name = n;
     this->port = p;
-    this->behaviour = b; 
 
     memset(&servAddr, 0, sizeof(servAddr));
     memset(&cliAddr, 0, sizeof(cliAddr));
@@ -35,8 +34,7 @@ void router::initialise(char n, int p, int b){ // initialises address settings
     this->sockc = socket(AF_INET, SOCK_DGRAM, 0);
     this->socks = socket(AF_INET, SOCK_DGRAM, 0);
 
-    cout << "\n\nInitialised router. Port:" << this->port << endl << "Name: " << n <<
-    " - behaving as a " << b << " - (0 denotes server behaviour, 1 for client)\n"; //debug info 
+   // cout << "\n\nRouter Name: "<< this->name << "\nPort: " << this->port << endl; 
 }
 
 //SETTERS 
@@ -47,9 +45,7 @@ void router::setName(char n){
 void router::setPort(int p){
     this->port = p; 
 }
-void router::setB(int b){
-    this->behaviour = b; 
-}
+
 
 //GETTERS 
 char router::getN(){
@@ -59,13 +55,11 @@ char router::getN(){
 int router::getP(){
     return this->port; 
 }
-int router::getB(){
-    return this->behaviour; 
-}
+
 
 void router::Rsend(char msg[100]){    
     //CLIENT SEND 
-    cout << "SEND AND RECEIVE RESPONSE (client behaviour)\n";
+    cout << "Client thread running\n";
     char recvmsg[100]; //receive buffer 
     int s,r; 
     
@@ -85,12 +79,13 @@ void router::Rsend(char msg[100]){
 
 void router::Rrecv(){
     char recvmsg[100]; 
-    char sendmsg[100] = "this is the server response";
+    char sendmsg[100] = "SERV-RESP";
     int r,s; 
+    cout << "Server thread running\n";
     if(bind(this->socks, (const struct sockaddr *)(this->pSer), sizeof(this->servAddr)) <0){
         perror("bind error"); 
     }
-    cout << "RECEIVE AND RESPOND (server behaviour)\n";
+    
 
     //SERVER RECEIVE 
     r = recvfrom(this->socks, (char *)recvmsg, 100, MSG_WAITALL, 
