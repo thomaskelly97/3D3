@@ -1,9 +1,9 @@
 #!/bin/bash
 
-echo 'xterm -title "A" -hold -e "./my-router A B 4000" & sleep 1
-xterm -title "B" -hold -e "./my-router B C 4001" & sleep 1
-xterm -title "C" -hold -e "./my-router C B 4002" & sleep 1
-xterm -title "D" -hold -e "./my-router A D 4003" & sleep 1' | shuf > exec
+echo 'xterm -title "A" -hold -e "./my-router A 10000" & sleep 1
+xterm -title "B" -hold -e "./my-router B 10001" & sleep 1
+xterm -title "C" -hold -e "./my-router C 10002" & sleep 1
+xterm -title "D" -hold -e "./my-router D 10003" & sleep 1' | shuf > exec
 chmod 777 exec
 ./exec
 rm exec

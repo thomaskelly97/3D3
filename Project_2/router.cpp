@@ -91,21 +91,31 @@ void router::Rsend(char msg[100]){
     //CLIENT SEND 
     bool update = true; 
     char answ; 
+
+    struct sockaddr_in addr; 
+    socklen_t len = sizeof(addr); 
+
+    
+    addr.sin_family = AF_INET;  
+    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
+
     cout << "Client thread running - Any key to proceed\n";
     cin>> answ; 
     char recvmsg[100]; //receive buffer 
     int s,r; 
     //const struct sockaddr_in * temp;
-    while(1){
+    
         cin >> answ; 
         for(int i = 0; i<size; i++){
             
             if(this->neighbours[i] == 1 && update == true){//if something is a neighbour, send to it
                 //we can now use the i
+                addr.sin_port = htons(ports[i]);
                 cout << "CLIENT-Found neighbour " << i << " on port " << ports[i] << "..attempting send"<< endl;  
 
             //  this->setPSER(addresses[i]);
-                s = sendto( (this->socks), msg, 100, MSG_CONFIRM, ( struct sockaddr *)(this->pSer), (this->len));
+                s = sendto( (this->socks), msg, 100, MSG_CONFIRM, ( struct sockaddr *)&addr, len);
                 cout << "CLIENT-Message sent, awaiting response."<< endl << endl; 
         }
         }
@@ -116,19 +126,22 @@ void router::Rsend(char msg[100]){
         
 
             //CLIENT RECEIVE 
-            r = recvfrom(this->sockc, (char *)recvmsg, 100, MSG_WAITALL, 
-                (struct sockaddr *)(this->pSer), this->plen);    if(r == -1){
+    this->servAddr.sin_port = htons(pNum);     
+    this->servAddr.sin_addr.s_addr = INADDR_ANY;  
+            r = recvfrom(this->socks, (char *)recvmsg, 100, MSG_WAITALL, 
+                (struct sockaddr *)&addr, &len);    
+        if(r == -1){
             perror("recv error");
         }
-        cout << "Client receiving response: " << recvmsg << endl; 
-        }
+        cout << "CLIENT- receiving response: " << recvmsg << endl; 
+        
 }
 
 void router::Rrecv(int pNum, char src){
     char recvmsg[100]; 
     char sendmsg[100];
     char abc[size] = {'A','B','C','D'};
-    sprintf(sendmsg, "Server Response from %c" , src);;
+    sprintf(sendmsg, "Hello from %c" , src);;
     int r,s; 
     cout << "Server thread running\n";
     memset(&servAddr, 0, sizeof(servAddr));
@@ -149,19 +162,10 @@ void router::Rrecv(int pNum, char src){
         if(r == -1){
             perror("recv error");
         }
-        cout << "Server receives " << recvmsg << "...sending response "<<   endl; 
+        cout << "Server receives {" << recvmsg << "} "<<   endl; 
             
 
-        //SERVER SEND RESPONSE 
-        for(int i =0; i<size; i++){
-            if(this->neighbours[i] == 1){
-                cout << "I am " << src << " sending to " << abc[i] << endl;
-                s = sendto(this->sockc, sendmsg, 100, 0, (const struct sockaddr *)(this->pCli), this->len);
-                if(s == -1){
-                    perror("send error");
-                }
-            }
-        }
+
     }
 }
 
