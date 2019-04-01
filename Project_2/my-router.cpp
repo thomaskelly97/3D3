@@ -23,27 +23,31 @@ void * threadInit(void * x);
 char abc[size] = {'A','B','C','D'};
 
 int charToInt(char c); 
+int port; 
 
 int main(int argc, char *argv[])
 {    
     //we should instantiate ALL routers as 'servers' (0)
     //if a router decides it wants to SEND data, simply change its type to a client
     //using setB(1) which will set its behaviour to client. This allows it to send data
-    char src,dest; 
-    int port,x=0,srcNum,dstNum; 
+    char src;
+    //,dest; 
+    int x=0,srcNum;
+    //dstNum; 
     x++; 
     pthread_t serverT, clientT; 
 
-    dest = *argv[1];
-    src = *argv[2];
-    port = atoi(argv[3]);
+   
+    src = *argv[1];
+    port = atoi(argv[2]);
     srcNum = charToInt(src);
-    dstNum = charToInt(dest);
+   // dstNum = charToInt(dest);
 
-    cout << "Router: " << src << "(" << srcNum << ")"<< "\nNeighbour: " << dest << "(" << dstNum << ")\n"; 
+    cout << "Router: " << src << "(" << srcNum <<")\n"; 
 
-    r->initialise(src,port); // initialise router 'A' on port 10000 as a client type(1)
+    r->initialise(src,port, srcNum); // initialise router 'A' on port 10000 as a client type(1)
     r->setNeighbours(srcNum);
+    //r->setAddress(srcNum);
     cout << src << "'s neighbours: ";
     for(int ii = 0; ii<size; ii++){
         if(r->getANeighbour(ii) == 1){
@@ -68,7 +72,7 @@ void clientInit(){
 
 
 void serverInit(){
-    r->Rrecv();
+    r->Rrecv(port);
 }
 
 void * threadInit(void *x){

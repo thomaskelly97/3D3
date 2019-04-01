@@ -4,14 +4,10 @@ CXXFLAGS= -g -Wall -pthread -std=c++11
 USERID=EDIT_MAKE_FILE
 CLASSES=
 
-all: my-router test_router
-
-test_router: $(CLASSES)
-	$(CXX)  $(CXXFLAGS) $@.cpp router.cpp -o $@ $^
+all: my-router 
 
 my-router: $(CLASSES)
 	$(CXX)  $(CXXFLAGS) $@.cpp router.cpp -o $@ $^
-
 
 
 clean:

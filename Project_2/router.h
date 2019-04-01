@@ -33,12 +33,14 @@ class router
     
 public: 
     router(); //default constructor 
-    void initialise(char n, int p);
+    void initialise(char n, int p, int srcNum);
     //SETTERS 
     void setName(char n);
     void setPort(int p);
     void setNeighbours(int source);
-    
+    void setAddress(int srcNum);
+    void setPSER(const struct sockaddr_in addr);
+
     //GETTERS 
     char getN(); 
     int getP(); 
@@ -47,7 +49,7 @@ public:
     
     //METHODS 
     void Rsend(char msg[100]);
-    void Rrecv(); 
+    void Rrecv(int pNum); 
 };
 
 #endif
