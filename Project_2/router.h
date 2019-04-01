@@ -49,7 +49,7 @@ public:
     
     //METHODS 
     void Rsend(char msg[100]);
-    void Rrecv(int pNum); 
+    void Rrecv(int pNum, char src); 
 };
 
 #endif

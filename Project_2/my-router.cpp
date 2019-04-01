@@ -24,13 +24,14 @@ char abc[size] = {'A','B','C','D'};
 
 int charToInt(char c); 
 int port; 
+char src;
 
 int main(int argc, char *argv[])
 {    
     //we should instantiate ALL routers as 'servers' (0)
     //if a router decides it wants to SEND data, simply change its type to a client
     //using setB(1) which will set its behaviour to client. This allows it to send data
-    char src;
+    
     //,dest; 
     int x=0,srcNum;
     //dstNum; 
@@ -66,13 +67,14 @@ int main(int argc, char *argv[])
 }
 
 void clientInit(){
-    char msg[100] = "hello";
+    char msg[100];
+    sprintf(msg, "hello from %c" , src);
     r->Rsend(msg);
 }
 
 
 void serverInit(){
-    r->Rrecv(port);
+    r->Rrecv(port,src);
 }
 
 void * threadInit(void *x){
