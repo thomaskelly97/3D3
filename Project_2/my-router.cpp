@@ -14,13 +14,13 @@
 #include <pthread.h>  
 #include "router.h"
 
-#define size 4 
+#define size 6
 using namespace std; 
 int threadCount =0; 
 router *r = new router(); //instantiate a router 
 void * threadInit(void * x);
 //int nTable[size][size] = {0,1,1,0, 1,0,0,1, 1,0,0,1, 0,1,1,0}; 
-char abc[size] = {'A','B','C','D'};
+char abc[size] = {'A','B','C','D','E','F'};
 
 int sockfd; 
 int charToInt(char c); 
@@ -101,7 +101,7 @@ void * threadInit(void *x){
 }
 
 int charToInt(char c){
-    char abc[size] = {'A','B','C','D'};
+    char abc[size] = {'A','B','C','D','E','F'};
     for (int i =0; i< size; i++){
         if(abc[i] == c){
             return i; 

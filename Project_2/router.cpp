@@ -13,8 +13,8 @@
 #include "router.h"
 using namespace std; 
 
-int nTable[size][size] = {0,1,1,0, 1,0,0,1, 1,0,0,1, 0,1,1,0};  //this will have to be updated upon network initialisation 
-int ports[size] = {10000,10001,10002,10003}; //in reality this will be read in and parsed from above layer. 
+int nTable[size][size] = {0,1,0,0,1,0, 1,0,1,0,1,1, 0,1,0,1,0,1, 0,0,1,0,0,1,  1,1,0,0,0,1, 0,1,1,1,1,0};  //this will have to be updated upon network initialisation 
+int ports[size] = {10000,10001,10002,10003,10004, 10005}; //in reality this will be read in and parsed from above layer. 
 
 router::router(){ //default constructor 
     this->name = ' '; 
@@ -126,8 +126,8 @@ void router::Rsend(char msg[100]){
         
 
             //CLIENT RECEIVE 
-    this->servAddr.sin_port = htons(pNum);     
-    this->servAddr.sin_addr.s_addr = INADDR_ANY;  
+    //this->servAddr.sin_port = htons(pNum);     
+    //this->servAddr.sin_addr.s_addr = INADDR_ANY;  
             r = recvfrom(this->socks, (char *)recvmsg, 100, MSG_WAITALL, 
                 (struct sockaddr *)&addr, &len);    
         if(r == -1){
@@ -140,7 +140,7 @@ void router::Rsend(char msg[100]){
 void router::Rrecv(int pNum, char src){
     char recvmsg[100]; 
     char sendmsg[100];
-    char abc[size] = {'A','B','C','D'};
+    char abc[size] = {'A','B','C','D', 'E','F'};
     sprintf(sendmsg, "Hello from %c" , src);;
     int r,s; 
     cout << "Server thread running\n";
