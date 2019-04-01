@@ -37,7 +37,7 @@ public:
     //SETTERS 
     void setName(char n);
     void setPort(int p);
-    void setNeighbours(int source);
+    void setNeighbours(int source, int n[]);
     void setAddress(int srcNum);
     void setPSER(const struct sockaddr_in addr);
 

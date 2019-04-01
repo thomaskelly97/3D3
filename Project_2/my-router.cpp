@@ -20,49 +20,49 @@ int threadCount =0;
 router *r = new router(); //instantiate a router 
 void * threadInit(void * x);
 //int nTable[size][size] = {0,1,1,0, 1,0,0,1, 1,0,0,1, 0,1,1,0}; 
-char abc[size] = {'A','B','C','D','E','F'};
+
+
+
+//PRABHJOT PARSER VARIABLES
+  char ch[size]={'A','B','C','D','E','F'};												
+  char name;
+  int neighbour_ports[size];
+  int port;                                      
+  int neighbours[size];
+  int link_cost[size];
+////////////////////////////////////	
+void parser();
+
 
 int sockfd; 
 int charToInt(char c); 
-int port; 
 char src;
 
 int main(int argc, char *argv[])
 {    
 
     int x=0,srcNum;
-    //dstNum; 
     x++; 
     pthread_t serverT, clientT; 
-    /*
-   // const struct sockaddr_in addr; 
-    //int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 
-
-    if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &oo, sizeof(int)) < 0){
-        perror("setsockopt(SO_REUSEADDR) failed");
-    }
-
-    memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
-
-    this->servAddr.sin_family = AF_INET;
-    this->servAddr.sin_port = htons(p);     
-    this->servAddr.sin_addr.s_addr = inet_pton("127.0.0.1");;
-   */
     src = *argv[1];
-    port = atoi(argv[2]);
+    name = src; 
+    
     srcNum = charToInt(src);
    // dstNum = charToInt(dest);
 
+    parser();
+    port = atoi(argv[2]);
     cout << "Router: " << src << "(" << srcNum <<")\n"; 
 
     r->initialise(src,port, srcNum); // initialise router 'A' on port 10000 as a client type(1)
-    r->setNeighbours(srcNum);
-    //r->setAddress(srcNum);
+    r->setNeighbours(srcNum, neighbours); //I need to take the parsed data from this file and set it in the router.cpp file. 
+
+  
     cout << src << "'s neighbours: ";
     for(int ii = 0; ii<size; ii++){
         if(r->getANeighbour(ii) == 1){
-            cout << abc[ii] << " "; 
+            cout << ch[ii] << " "; 
         } 
     }
     
@@ -101,11 +101,125 @@ void * threadInit(void *x){
 }
 
 int charToInt(char c){
-    char abc[size] = {'A','B','C','D','E','F'};
+    char ch[size] = {'A','B','C','D','E','F'};
     for (int i =0; i< size; i++){
-        if(abc[i] == c){
+        if(ch[i] == c){
             return i; 
         }
     }
     return -1; 
+}
+
+
+//PARSES TOPOLOGY FILES 
+//Each router stores its neighbour in the object->neighbours array 
+//
+void parser(){
+//parses sample.txt to get myport port of neighbours and link cost for neighbours
+	//will have to change the function signature when adding to router class .. either to void function_name()
+	//or void function_name(char name) if u want to pass the name 	
+
+	string name_string="";
+	name_string+=name;
+	string line;	
+	int get_port_from; //seems unused so I'm commenting it out.... 
+	bool got_port=false;
+	ifstream myfile("newsample.txt");										//file with initial info goes here
+	int x,y,z,cost,flag=1,i=0,j=0;
+	string x_string="",y_string="",z_string="",cost_string="";
+
+
+	for(int i=0;i<7;i++){
+		link_cost[i]=-1;
+		neighbours[i]=0;
+		neighbour_ports[i]=-1;
+	}
+
+
+
+	while(getline(myfile,line)){
+	flag=1;
+	i=0;j=0;x_string="";y_string="";z_string="",cost_string="";
+	char* a = (char*)line.c_str();
+	char currchar=a[i];
+		while(flag<5&&currchar==name){
+			
+			if(a[i]==','){
+				i++;
+				j++;
+					if(j==1){
+							flag++;
+							x=(int)(x_string.c_str()[0] -'A');
+						}
+					if(j==2){
+							flag++;
+							y=(int)(y_string.c_str()[0]-'A');
+							neighbours[y]=1;
+						}
+
+					if(j==3){
+							flag++;
+							if(!got_port){
+							port = stoi(z_string);
+							got_port=true;
+						}
+						}
+				}
+			
+			if(a[i]<0){
+				flag++;
+				cost=stoi(cost_string);
+				link_cost[y]=cost;
+				}
+	
+			switch(flag)
+			{	
+				case 1: x_string+=a[i++];break;
+				case 2: y_string+=a[i++];break;
+				case 3: z_string+=a[i++];break;
+				case 4: cost_string+=a[i++];break;
+
+			} 
+				
+				
+		}
+
+		for(int forcounter=0;forcounter<7;forcounter++){
+			char currneighbour;
+			if(neighbours[forcounter]==1)
+				currneighbour=forcounter;
+		if((int)(currchar-'A')==currneighbour){
+			while(j<3){
+				
+				if(a[i]==','){
+					i++;				
+					j++;
+				}
+				if(j==1){
+					y_string+=a[i];
+					}
+					
+				else if(j==2){
+					z_string+=a[i];
+					}
+				i++;
+				}
+				
+				if(j==3)
+				neighbour_ports[forcounter]=stoi(z_string);
+			
+
+		}
+	}
+
+	}
+		
+	cout<<"port(" << src << "): "<<port<<", neighbours of " << src << ": ";
+		for(i=0;i<7;i++){
+
+		if(neighbours[i]){
+			cout<<ch[i]<<",link cost: "<<link_cost[i]<<", port: "<<neighbour_ports[i]<<"\n";	
+		}
+
+		}
 }

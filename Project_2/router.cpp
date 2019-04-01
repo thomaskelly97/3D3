@@ -13,7 +13,7 @@
 #include "router.h"
 using namespace std; 
 
-int nTable[size][size] = {0,1,0,0,1,0, 1,0,1,0,1,1, 0,1,0,1,0,1, 0,0,1,0,0,1,  1,1,0,0,0,1, 0,1,1,1,1,0};  //this will have to be updated upon network initialisation 
+//int nTable[size][size] = {0,1,0,0,1,0, 1,0,1,0,1,1, 0,1,0,1,0,1, 0,0,1,0,0,1,  1,1,0,0,0,1, 0,1,1,1,1,0};  //this will have to be updated upon network initialisation 
 int ports[size] = {10000,10001,10002,10003,10004, 10005}; //in reality this will be read in and parsed from above layer. 
 
 router::router(){ //default constructor 
@@ -60,15 +60,11 @@ void router::setPort(int p){
     this->port = p; 
 }
 
-void router::setNeighbours(int source){
+void router::setNeighbours(int source, int n[]){
     //char abc[4] = {'A','B','C','D'};
     for(int i = 0; i<size; i++){
-        for(int j = 0; j< size ;j++){
-            if(source == i && nTable[source][j] == 1){
-                //found a neighbour 
-                this->neighbours[j] = 1; 
-                //cout << abc[j] << " is a neighbour.\n"; 
-            }
+        if(n[i] == 1){
+            this->neighbours[i] = 1; //set as a neighbour 
         }
     }
 }
@@ -101,7 +97,7 @@ void router::Rsend(char msg[100]){
     memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
 
     cout << "Client thread running - Any key to proceed\n";
-    cin>> answ; 
+    
     char recvmsg[100]; //receive buffer 
     int s,r; 
     //const struct sockaddr_in * temp;
@@ -140,9 +136,10 @@ void router::Rsend(char msg[100]){
 void router::Rrecv(int pNum, char src){
     char recvmsg[100]; 
     char sendmsg[100];
-    char abc[size] = {'A','B','C','D', 'E','F'};
+    //char abc[size] = {'A','B','C','D', 'E','F'};
     sprintf(sendmsg, "Hello from %c" , src);;
-    int r,s; 
+    int r;
+    //s; 
     cout << "Server thread running\n";
     memset(&servAddr, 0, sizeof(servAddr));
     memset(&cliAddr, 0, sizeof(cliAddr));

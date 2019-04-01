@@ -5,7 +5,7 @@ xterm -title "B" -hold -e "./my-router B 10001" & sleep 1
 xterm -title "C" -hold -e "./my-router C 10002" & sleep 1
 xterm -title "D" -hold -e "./my-router D 10003" & sleep 1
 xterm -title "E" -hold -e "./my-router E 10004" & sleep 1
-xterm -title "F" -hold -e "./my-router F 10005" & sleep 1' | shuf > exec
+xterm -title "F" -hold -e "./my-router F 10005 " & sleep 1' | shuf > exec
 chmod 777 exec
 ./exec
 rm exec
