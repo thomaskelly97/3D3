@@ -14,7 +14,7 @@
 #include <pthread.h>  
 #include "router.h"
 
-#define size 6
+#define size 7
 using namespace std; 
 int threadCount =0; 
 router *r = new router(); //instantiate a router 
@@ -24,7 +24,7 @@ void * threadInit(void * x);
 
 
 //PRABHJOT PARSER VARIABLES
-  char ch[size]={'A','B','C','D','E','F'};												
+  char ch[size]={'A','B','C','D','E','F','G'};												
   char name;
   int neighbour_ports[size];
   int port;                                      
@@ -52,13 +52,13 @@ int main(int argc, char *argv[])
    // dstNum = charToInt(dest);
 
     parser();
-    port = atoi(argv[2]);
     cout << "Router: " << src << "(" << srcNum <<")\n"; 
 
     r->initialise(src,port, srcNum); // initialise router 'A' on port 10000 as a client type(1)
-    r->setNeighbours(srcNum, neighbours); //I need to take the parsed data from this file and set it in the router.cpp file. 
+    //r->setNeighbours(srcNum, neighbours); //I need to take the parsed data from this file and set it in the router.cpp file. 
 
-  
+    r->setparserstuff(neighbours,neighbour_ports,link_cost);
+    
     cout << src << "'s neighbours: ";
     for(int ii = 0; ii<size; ii++){
         if(r->getANeighbour(ii) == 1){
@@ -76,20 +76,37 @@ int main(int argc, char *argv[])
 }
 
 void clientInit(){
-    char msg[100];
-    sprintf(msg, "hello from %c" , src);
-    r->Rsend(msg);
+	sleep(8);
+    while(!r->isupdated)
+    	r->dvsend();
+		
+    cout<<"\nback in function clientInit()\n";
 }
 
 
 void serverInit(){
-    r->Rrecv(port,src);
+     int count=0;    
+
+    while(!r->isupdated){
+    	r->dvrecv(port,src);
+    cout<<"\nback in function serverInit()\n  ";
+	
+
+    if(!r->updating){
+	count++;
+	}
+
+//  if(count>=)												//still have to see this...
+//	isupdated=true;
+	
+	}
 }
 
 void * threadInit(void *x){
     int * xI = (int *) x;
     xI++;  
     threadCount++; 
+	
     if(threadCount == 1){
         //cout << "Server thread\n";
         serverInit(); 
@@ -101,7 +118,7 @@ void * threadInit(void *x){
 }
 
 int charToInt(char c){
-    char ch[size] = {'A','B','C','D','E','F'};
+    char ch[size] = {'A','B','C','D','E','F', 'G'};
     for (int i =0; i< size; i++){
         if(ch[i] == c){
             return i; 
@@ -188,6 +205,7 @@ void parser(){
 			char currneighbour;
 			if(neighbours[forcounter]==1)
 				currneighbour=forcounter;
+			else currneighbour=-1;
 		if((int)(currchar-'A')==currneighbour){
 			while(j<3){
 				
@@ -212,14 +230,48 @@ void parser(){
 		}
 	}
 
+		if(a[2]==name&&!neighbours[(int)(currchar-'A')]){
+			while(j<3){
+
+				if(a[i]==','){
+					i++;				
+					j++;
+				}
+				if(j==0){
+					y_string+=a[i];
+					y=(int)(y_string.c_str()[0]-'A');
+					i++;				
+					}
+				else if(j==1){
+					i++;
+					}	
+				else if(j==2){
+					z_string+=a[i];
+					i++;					
+					}
+				
+				
+				}
+				if(j==3)
+				neighbour_ports[y]=stoi(z_string);
+				cout<<"for "<<y<<": "<<neighbour_ports[y]<<"\n";
+				while(!(a[i]<0)){
+					cost_string+=a[i++];
+					}
+				//cost=stoi(cost_string);
+				//link_cost[y]=cost;
+				}
+
 	}
-		
-	cout<<"port(" << src << "): "<<port<<", neighbours of " << src << ": ";
-		for(i=0;i<7;i++){
 
-		if(neighbours[i]){
-			cout<<ch[i]<<",link cost: "<<link_cost[i]<<", port: "<<neighbour_ports[i]<<"\n";	
-		}
+	//neighbour_ports[(int)(name-'A')] = port;
+	neighbours[(int)(name-'A')]=-1;
+	cout<<"port(" << port<<"\n" ;//<< "): "<<port<<", neighbours of " << src << ": ";
+//		for(i=0;i<7;i++){
 
-		}
+//		if(neighbours[i]){
+//			cout<<ch[i]<<",link cost: "<<link_cost[i]<<", port: "<<neighbour_ports[i]<<"\n";	
+//		}
+
+//		}
 }
