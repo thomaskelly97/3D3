@@ -13,7 +13,7 @@ void InjectTraffic();
 int main ()
 {
     const char* in = "start-router";
-    const char* out = "start-router_changed";
+    const char* out = "start-router-changed";
 
     Initialise(in);
     InjectTraffic();
@@ -24,13 +24,14 @@ int main ()
 }
 
 void Initialise(const char* inputfile){
-    cout << "\nInitialising Network..."
+    cout << "\nInitialising Network...";
     const char * command = "./";
+    const char * cmd;
     string fullcmd;
     fullcmd += command;
     fullcmd += inputfile;
-    command = fullcmd.c_str();
-    system(command);
+    cmd = fullcmd.c_str();
+    system(cmd);
 }
 
 void InjectTraffic(){

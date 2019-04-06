@@ -1,4 +1,4 @@
-my-router G 10006
+./my-router G 10006
 sleep .1
  A B Hello
 sleep .1
