@@ -1,0 +1,104 @@
+for 1: 10001
+for 2: 10002
+for 3: 10003
+for 4: 10004
+port(10005
+Router: F(5)
+
+A: 0
+name: A,port: -1,cost: -1,via: -1
+
+B: 1
+name: B,port: 10001,cost: 1,via: 1
+
+C: 1
+name: C,port: 10002,cost: 1,via: 2
+
+D: 1
+name: D,port: 10003,cost: 3,via: 3
+
+E: 1
+name: E,port: 10004,cost: 3,via: 4
+
+F: -1
+name: F,port: -1,cost: -2,via: -2
+
+G: 0
+name: G,port: -1,cost: -1,via: -1
+F's neighbours: B C D E 
+SERVER-Waiting to receive...
+3 -1 -1 10002 -1 -1 10005 -1 -1 -1 4 -2 -1 3 -1 in here for: 2
+4 3     1 1 0 in here for: 3
+-2 3     3 1 1 in here for: 5
+3 3     -2 -1 0 no updates this time
+SERVER-Waiting to receive...
+source port: 10005sending dvs to neighbours4 10000 10001 -1 -1 -1 10005 -1 1 2 4 6 -2 3 -1 in here for: 0
+1 3     -1 0 0  changed
+in here for: 1
+2 3     1 1 0 in here for: 2
+4 3     1 1 0 in here for: 3
+6 3     3 1 0 in here for: 4
+-2 3     3 1 1 in here for: 5
+3 3     -2 -1 0 tables updated after recieving distance vectors fromE, new tables: 
+router	min cost	Via
+A	4		4
+written to output stream
+B	1		1
+written to output stream
+C	1		2
+written to output stream
+D	3		3
+written to output stream
+E	3		4
+written to output stream
+F	-2		-2
+written to output stream
+G	-1		-1
+written to output stream
+SERVER-Waiting to receive...
+3 -1 -1 10002 -1 -1 10005 -1 -1 4 4 -2 6 3 -1 in here for: 1
+4 3     1 1 0 in here for: 2
+4 3     1 1 0 in here for: 3
+-2 3     3 1 1 in here for: 4
+6 3     3 1 0 in here for: 5
+3 3     -2 -1 0 no updates this time
+SERVER-Waiting to receive...
+source port: 10005sending dvs to neighbours2 -1 10001 -1 10003 -1 10005 -1 5 2 -2 4 4 1 -1 in here for: 0
+5 1     4 1 0 in here for: 1
+2 1     1 1 0 in here for: 2
+-2 1     1 1 1 in here for: 3
+4 1     3 1 0 in here for: 4
+4 1     3 1 0 in here for: 5
+1 1     -2 -1 0 no updates this time
+SERVER-Waiting to receive...
+4 10000 10001 -1 -1 -1 10005 -1 1 2 4 6 -2 3 -1 in here for: 0
+1 3     4 1 0 in here for: 1
+2 3     1 1 0 in here for: 2
+4 3     1 1 0 in here for: 3
+6 3     3 1 0 in here for: 4
+-2 3     3 1 1 in here for: 5
+3 3     -2 -1 0 no updates this time
+SERVER-Waiting to receive...
+1 10000 -1 10002 -1 10004 10005 -1 3 -2 2 4 2 1 -1 in here for: 0
+3 1     4 1 0 in here for: 1
+-2 1     1 1 1 in here for: 2
+2 1     1 1 0 in here for: 3
+4 1     3 1 0 in here for: 4
+2 1     3 1 0 in here for: 5
+1 1     -2 -1 0 no updates this time
+SERVER-Waiting to receive...
+2 -1 10001 -1 10003 -1 10005 -1 5 2 -2 4 4 1 -1 in here for: 0
+5 1     4 1 0 in here for: 1
+2 1     1 1 0 in here for: 2
+-2 1     1 1 1 in here for: 3
+4 1     3 1 0 in here for: 4
+4 1     3 1 0 in here for: 5
+1 1     -2 -1 0 no updates this time
+SERVER-Waiting to receive...
+1 10000 -1 10002 -1 10004 10005 -1 3 -2 2 4 2 1 -1 in here for: 0
+3 1     4 1 0 in here for: 1
+-2 1     1 1 1 in here for: 2
+2 1     1 1 0 in here for: 3
+4 1     3 1 0 in here for: 4
+2 1     3 1 0 in here for: 5
+1 1     -2 -1 0 no updates this time

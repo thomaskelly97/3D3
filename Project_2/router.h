@@ -14,8 +14,11 @@
 #include <errno.h> 
 #include <unistd.h> 
 #include <vector> 
+#include <fstream>
 #define size 7
 using namespace std; 
+
+
 
 class router
 {
@@ -32,7 +35,8 @@ class router
     socklen_t len; 
     socklen_t * plen = &len; 
     int iterations_without_update;
-    
+    string filename;
+    ofstream outputfile;
 public: 
     router(); //default constructor 
     int msgflag;     // 0 for dvs 1 for normal message and 2 for update dvs
@@ -61,6 +65,7 @@ public:
     void dvsend();
     void dvrecv(int pNum,char src);
     void updatetables();
+    void writeToFile();
 };
 
 #endif

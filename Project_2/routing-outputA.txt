@@ -1,0 +1,24 @@
+port(10000
+Router: A(0)
+
+A: -1
+name: A,port: -1,cost: -2,via: -2
+
+B: 1
+name: B,port: 10001,cost: 4,via: 1
+
+C: 0
+name: C,port: -1,cost: -1,via: -1
+
+D: 0
+name: D,port: -1,cost: -1,via: -1
+
+E: 1
+name: E,port: 10004,cost: 1,via: 4
+
+F: 0
+name: F,port: -1,cost: -1,via: -1
+
+G: 0
+name: G,port: -1,cost: -1,via: -1
+A's neighbours: B E 

@@ -7,7 +7,7 @@ CLASSES=
 all: my-router 
 
 my-router: $(CLASSES)
-	$(CXX)  $(CXXFLAGS) $@.cpp router.cpp -o $@ $^
+	$(CXX)  $(CXXFLAGS) $@.cpp router.cpp msg.cpp -o $@ $^
 
 
 clean:

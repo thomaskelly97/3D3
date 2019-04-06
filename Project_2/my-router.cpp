@@ -13,6 +13,7 @@
 #include <fstream>
 #include <pthread.h>  
 #include "router.h"
+#include "msg.h"
 
 #define size 7
 using namespace std; 
@@ -23,8 +24,9 @@ void * threadInit(void * x);
 
 
 
+
 //PRABHJOT PARSER VARIABLES
-  char ch[size]={'A','B','C','D','E','F','G'};												
+ char ch[size]={'A','B','C','D','E','F','G'};												
   char name;
   int neighbour_ports[size];
   int port;                                      
@@ -80,7 +82,7 @@ void clientInit(){
     while(!r->isupdated)
     	r->dvsend();
 		
-    cout<<"\nback in function clientInit()\n";
+    //cout<<"\nback in function clientInit()\n";
 }
 
 
@@ -89,16 +91,17 @@ void serverInit(){
 
     while(!r->isupdated){
     	r->dvrecv(port,src);
-    cout<<"\nback in function serverInit()\n  ";
+    //cout<<"\nback in function serverInit()\n  ";
 	
 
     if(!r->updating){
 	count++;
 	}
 
-//  if(count>=)												//still have to see this...
-//	isupdated=true;
-	
+     if(count>=7){												//still have to see this...
+	r->isupdated=true;
+	r->msgflag=1;
+	}
 	}
 }
 
@@ -118,7 +121,6 @@ void * threadInit(void *x){
 }
 
 int charToInt(char c){
-    char ch[size] = {'A','B','C','D','E','F', 'G'};
     for (int i =0; i< size; i++){
         if(ch[i] == c){
             return i; 
@@ -139,10 +141,11 @@ void parser(){
 	string name_string="";
 	name_string+=name;
 	string line;	
-	int get_port_from; //seems unused so I'm commenting it out.... 
+	//int get_port_from; //seems unused so I'm commenting it out.... 
 	bool got_port=false;
 	ifstream myfile("newsample.txt");										//file with initial info goes here
-	int x,y,z,cost,flag=1,i=0,j=0;
+	int x=0,y,z=0,cost,flag=1,i=0,j=0;
+	x++; x=0; z++; z=0; 
 	string x_string="",y_string="",z_string="",cost_string="";
 
 

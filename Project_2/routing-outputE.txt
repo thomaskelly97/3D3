@@ -1,0 +1,106 @@
+for 0: 10000
+for 1: 10001
+port(10004
+Router: E(4)
+
+A: 1
+name: A,port: 10000,cost: 1,via: 0
+
+B: 1
+name: B,port: 10001,cost: 2,via: 1
+
+C: 0
+name: C,port: -1,cost: -1,via: -1
+
+D: 0
+name: D,port: -1,cost: -1,via: -1
+
+E: -1
+name: E,port: -1,cost: -2,via: -2
+
+F: 1
+name: F,port: 10005,cost: 3,via: 5
+
+G: 0
+name: G,port: -1,cost: -1,via: -1
+E's neighbours: A B F 
+SERVER-Waiting to receive...
+5 -1 10001 10002 10003 10004 -1 -1 -1 1 1 3 3 -2 -1 in here for: 1
+1 3     2 1 0 in here for: 2
+1 3     -1 0 0  changed
+in here for: 3
+3 3     -1 0 0  changed
+in here for: 4
+3 3     -2 -1 0 in here for: 5
+-2 3     3 1 1 tables updated after recieving distance vectors fromF, new tables: 
+router	min cost	Via
+A	1		0
+written to output stream
+B	2		1
+written to output stream
+C	4		5
+written to output stream
+D	6		5
+written to output stream
+E	-2		-2
+written to output stream
+F	3		5
+written to output stream
+G	-1		-1
+written to output stream
+SERVER-Waiting to receive...
+source port: 10004sending dvs to neighbours0 -1 10001 -1 -1 10004 -1 -1 -2 3 5 7 1 4 -1 in here for: 0
+-2 1     1 1 1 in here for: 1
+3 1     2 1 0 in here for: 2
+5 1     4 1 0 in here for: 3
+7 1     6 1 0 in here for: 4
+1 1     -2 -1 0 in here for: 5
+4 1     3 1 0 no updates this time
+SERVER-Waiting to receive...
+5 -1 10001 10002 10003 10004 -1 -1 4 1 1 3 3 -2 -1 in here for: 0
+4 3     1 1 0 in here for: 1
+1 3     2 1 0 in here for: 2
+1 3     4 1 0 in here for: 3
+3 3     6 1 0 in here for: 4
+3 3     -2 -1 0 in here for: 5
+-2 3     3 1 1 no updates this time
+SERVER-Waiting to receive...
+source port: 10004sending dvs to neighbours1 10000 -1 10002 -1 10004 10005 -1 3 -2 2 4 2 1 -1 in here for: 0
+3 2     1 1 0 in here for: 1
+-2 2     2 1 1 in here for: 2
+2 2     4 1 0 in here for: 3
+4 2     6 1 0 in here for: 4
+2 2     -2 -1 0 in here for: 5
+1 2     3 1 0 no updates this time
+SERVER-Waiting to receive...
+0 -1 10001 -1 -1 10004 -1 -1 -2 3 5 7 1 4 -1 in here for: 0
+-2 1     1 1 1 in here for: 1
+3 1     2 1 0 in here for: 2
+5 1     4 1 0 in here for: 3
+7 1     6 1 0 in here for: 4
+1 1     -2 -1 0 in here for: 5
+4 1     3 1 0 no updates this time
+SERVER-Waiting to receive...
+1 10000 -1 10002 -1 10004 10005 -1 3 -2 2 4 2 1 -1 in here for: 0
+3 2     1 1 0 in here for: 1
+-2 2     2 1 1 in here for: 2
+2 2     4 1 0 in here for: 3
+4 2     6 1 0 in here for: 4
+2 2     -2 -1 0 in here for: 5
+1 2     3 1 0 no updates this time
+SERVER-Waiting to receive...
+source port: 10004sending dvs to neighbours0 -1 10001 -1 -1 10004 -1 -1 -2 3 5 7 1 4 -1 in here for: 0
+-2 1     1 1 1 in here for: 1
+3 1     2 1 0 in here for: 2
+5 1     4 1 0 in here for: 3
+7 1     6 1 0 in here for: 4
+1 1     -2 -1 0 in here for: 5
+4 1     3 1 0 no updates this time
+SERVER-Waiting to receive...
+source port: 10004sending dvs to neighbours0 -1 10001 -1 -1 10004 -1 -1 -2 3 5 7 1 4 -1 in here for: 0
+-2 1     1 1 1 in here for: 1
+3 1     2 1 0 in here for: 2
+5 1     4 1 0 in here for: 3
+7 1     6 1 0 in here for: 4
+1 1     -2 -1 0 in here for: 5
+4 1     3 1 0 no updates this time
