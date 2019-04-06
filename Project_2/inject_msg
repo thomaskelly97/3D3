@@ -1,6 +1,4 @@
 #!/bin/bash
 
-echo 'xterm -title "Message Injector" -hold -e "./my-router G 10006 " & sleep 1' | shuf > exec
-chmod 777 exec
-./exec
-rm exec
+
+xterm -title "G" -hold -e ". sendtraffic"

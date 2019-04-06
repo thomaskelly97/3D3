@@ -101,8 +101,6 @@ void getinitialcosts(){
 
 string pathgen(char src,char dest){
 
-	
-
 	string path = "";
 	int curr=src;
 	int prev;
