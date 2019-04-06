@@ -24,7 +24,7 @@ int main ()
 }
 
 void Initialise(const char* inputfile){
-    cout << "\nInitialising Network...";
+    cout << "\nInitialising Network...\n";
     const char * command = "./";
     const char * cmd;
     string fullcmd;
@@ -64,6 +64,22 @@ void RemoveRouter(const char* inputfile, const char* outputfile){
         Initialise(outputfile);         
         InjectTraffic();    
     }
+    else
+    {
+        recieved = true;
+        cout << "\nWould you like to close? (Y/N)";
+        while(recieved){
+            cin >> response;
+            if(response != 'Y' || response != 'y' || response != 'N' ||  response != 'n'){
+                recieved = false;
+                system("killall xterm");
+            }
+            else 
+                cout << "Invalid input : Format--> Y or N" ;
+        }
+    }    
+    
+
 }
 
 void RemoveLineContaining(const char* inputfile, const char* outputfile, const char* RemoveContaining){
