@@ -32,6 +32,7 @@ void * threadInit(void * x);
   int port;                                      
   int neighbours[size];
   int link_cost[size];
+  int sendcount;
 ////////////////////////////////////	
 void parser();
 
@@ -79,30 +80,49 @@ int main(int argc, char *argv[])
 
 void clientInit(){
 	sleep(8);
-    while(!r->isupdated)
+    while(!r->isupdatedsend){
     	r->dvsend();
-		
-    //cout<<"\nback in function clientInit()\n";
+	cout<<"out of dvsend() with sendcount= "<<sendcount<<"\n";
+	if(!r->updating)
+		sendcount++;
+	else 
+		sendcount=0;
+
+	cout<<sendcount;
+	if(sendcount>=6)
+		r->isupdatedsend=true;
+	}	
+	r->isupdated=false;
+	r->msgflag=1;
+	
+    cout<<"\nback in function clientInit()\n";
+	r->Rsend();
 }
 
 
 void serverInit(){
      int count=0;    
-
+	
+	r->outputfile.open(r->filename);
     while(!r->isupdated){
     	r->dvrecv(port,src);
-    //cout<<"\nback in function serverInit()\n  ";
-	
+    
 
     if(!r->updating){
 	count++;
 	}
+    else 
+	count=0;
 
-     if(count>=7){												//still have to see this...
+     if(count>=7){											
 	r->isupdated=true;
 	r->msgflag=1;
 	}
 	}
+	
+	r->outputfile.close();
+  cout<<"\nback in function serverInit()\n  ";
+	r->Rrecv(port,src);
 }
 
 void * threadInit(void *x){

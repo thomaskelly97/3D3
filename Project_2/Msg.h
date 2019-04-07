@@ -24,7 +24,7 @@ class Msg
     string destName;
     int destPort; 
     string data; 
-
+    string msg;
     public: 
     Msg(); 
 
@@ -35,10 +35,10 @@ class Msg
     void setDATA(string d);
      
     //GETTERS 
-    int getDP();
+    
     string getDN();
     string getSN();
-
+    string getDATA();
 
     //METHODS 
     void createMsg();

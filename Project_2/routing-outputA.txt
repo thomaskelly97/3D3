@@ -22,3 +22,123 @@ name: F,port: -1,cost: -1,via: -1
 G: 0
 name: G,port: -1,cost: -1,via: -1
 A's neighbours: B E 
+SERVER-Waiting to receive...
+in here for: 0
+1 1     -2 -1 0 in here for: 1
+2 1     4 1 1  changed
+in here for: 4
+-2 1     1 1 1 in here for: 5
+3 1     -1 0 0  changed
+tables updated after recieving distance vectors fromE, new tables: 
+router	min cost	Via
+A	-2		-2
+written to output stream
+B	3		4
+written to output stream
+C	-1		-1
+written to output stream
+D	-1		-1
+written to output stream
+E	1		4
+written to output stream
+F	4		4
+written to output stream
+SERVER-Waiting to receive...
+in here for: 0
+1 1     -2 -1 0 in here for: 1
+2 1     3 1 0 in here for: 4
+-2 1     1 1 1 in here for: 5
+3 1     4 0 0 no updates this time
+SERVER-Waiting to receive...
+in here for: 0
+1 1     -2 -1 0 in here for: 1
+2 1     3 1 0 in here for: 2
+4 1     -1 0 0  changed
+in here for: 3
+6 1     -1 0 0  changed
+in here for: 4
+-2 1     1 1 1 in here for: 5
+3 1     4 0 0 tables updated after recieving distance vectors fromE, new tables: 
+router	min cost	Via
+A	-2		-2
+written to output stream
+B	3		4
+written to output stream
+C	5		4
+written to output stream
+D	7		4
+written to output stream
+E	1		4
+written to output stream
+F	4		4
+written to output stream
+SERVER-Waiting to receive...
+in here for: 0
+1 1     -2 -1 0 in here for: 1
+2 1     3 1 0 in here for: 2
+4 1     5 0 0 in here for: 3
+6 1     7 0 0 in here for: 4
+-2 1     1 1 1 in here for: 5
+3 1     4 0 0 no updates this time
+SERVER-Waiting to receive...
+source port: 10000sending dvs to neighboursin here for: 0
+1 1     -2 -1 0 in here for: 1
+2 1     3 1 0 in here for: 2
+4 1     5 0 0 in here for: 3
+6 1     7 0 0 in here for: 4
+-2 1     1 1 1 in here for: 5
+3 1     4 0 0 no updates this time
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 0
+1source port: 10000sending dvs to neighboursin here for: 0
+3 3     -2 -1 0 in here for: 1
+-2 3     3 1 1 in here for: 2
+2 3     5 0 0 in here for: 3
+4 3     7 0 0 in here for: 4
+2 3     1 1 0 in here for: 5
+1 3     4 0 0 no updates this time
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 1
+2source port: 10000sending dvs to neighboursout of dvsend() with sendcount= 2
+3source port: 10000sending dvs to neighboursin here for: 0
+3 3     -2 -1 0 in here for: 1
+-2 3     3 1 1 in here for: 2
+2 3     5 0 0 in here for: 3
+4 3     7 0 0 in here for: 4
+2 3     1 1 0 in here for: 5
+1 3     4 0 0 no updates this time
+SERVER-Waiting to receive...
+in here for: 0
+1 1     -2 -1 0 in here for: 1
+2 1     3 1 0 in here for: 2
+4 1     5 0 0 in here for: 3
+6 1     7 0 0 in here for: 4
+-2 1     1 1 1 in here for: 5
+3 1     4 0 0 no updates this time
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 3
+4source port: 10000sending dvs to neighboursin here for: 0
+3 3     -2 -1 0 in here for: 1
+-2 3     3 1 1 in here for: 2
+2 3     5 0 0 in here for: 3
+4 3     7 0 0 in here for: 4
+2 3     1 1 0 in here for: 5
+1 3     4 0 0 no updates this time
+SERVER-Waiting to receive...
+in here for: 0
+3 3     -2 -1 0 in here for: 1
+-2 3     3 1 1 in here for: 2
+2 3     5 0 0 in here for: 3
+4 3     7 0 0 in here for: 4
+2 3     1 1 0 in here for: 5
+1 3     4 0 0 no updates this time
+
+back in function serverInit()
+  Server thread running
+IN FUNCTION RRECV
+out of dvsend() with sendcount= 4
+5source port: 10000sending dvs to neighboursout of dvsend() with sendcount= 5
+6
+back in function clientInit()
+Client thread running - Any key to proceed
+IN FUNCTION RSEND

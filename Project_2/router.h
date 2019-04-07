@@ -35,17 +35,17 @@ class router
     socklen_t len; 
     socklen_t * plen = &len; 
     int iterations_without_update;
-    string filename;
-    ofstream outputfile;
+
 public: 
     router(); //default constructor 
     int msgflag;     // 0 for dvs 1 for normal message and 2 for update dvs
     bool updating; //reciving for updates
     bool isupdated;  //if table got updated
+    bool isupdatedsend; //if send thread is left behind
     bool dvsendready; //dv is send ready
-
+    string filename;
+    ofstream outputfile;
     int dvrecved[20];
-
     void initialise(char n, int p, int srcNum);
     //SETTERS 
     void setName(char n);
@@ -60,7 +60,7 @@ public:
     int getANeighbour(int index);
     
     //METHODS 
-    void Rsend(char msg[100]);
+    void Rsend();
     void Rrecv(int pNum, char src); 
     void dvsend();
     void dvrecv(int pNum,char src);

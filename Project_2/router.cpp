@@ -58,7 +58,7 @@ void router::initialise(char n, int p, int srcNum){ // initialises address setti
     filename="";
     filename+="router";
     filename+=this->name;  
-    filename+="OutputStream";
+    filename+="OutputStream.txt";
     this->outputfile.open(filename);
     
     this->outputfile<<"**this file is updated when router table for "<<this->name<<" is changed**\n";
@@ -105,9 +105,10 @@ int router::getANeighbour(int index){
     return this->neighbours[index]; 
 }
 
-/*
-void router::Rsend(char msg[100]){    
+
+void router::Rsend(){    
     //CLIENT SEND 
+    char msg[100];                     
     bool update = true; 
     char answ; 
 
@@ -129,7 +130,7 @@ void router::Rsend(char msg[100]){
 
    int via = destVia[(int)(recvmsg[0]-'A')];    //recvmsg[0] is destination , recvmsg[1] is source...
 
-
+	cout<<"IN FUNCTION RSEND\n";
         cin >> answ; 
       //  for(int i = 0; i<size; i++){
             
@@ -150,7 +151,7 @@ void router::Rsend(char msg[100]){
         }
 	       cout << "CLIENT- receiving response: " << recvmsg << endl; 
  
-}*/ 
+}
 void router::dvsend(){    
     //CLIENT SEND 
     char ch[size]={'A','B','C','D','E','F','G'};
@@ -164,6 +165,7 @@ void router::dvsend(){
 	msg[0]=(int)(name-'A');
     string msgDest; 
     string actualMsg; 
+    string msgSrc;
     string srcMsgN = "" + this->name; 
     int msgDI; 
 	Msg *m = new Msg();
@@ -182,26 +184,30 @@ void router::dvsend(){
     memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
     
     if(this->name == 'G'){ //if this is node G, user has specified for message injection to occur 
-        char inject_msg[10] = "Injected\n"; 
+        const char *inject_msg;
+        string inj_msg; 
         cout << "\nMESSAGE INJECTOR RUNNING\n"; //message will be hardcoded to be sent to A 
-        cout << "Where do you want to send?\n";
+        cout << "Where do you want to send from?\n"<<endl;
+        cin >> msgSrc; 
+        cout << "Where do you want to send to?\n"<<endl;
         cin >> msgDest; 
-        cout << "Enter message to send:\n";
+        cout << "Enter message to send:\n"<<endl;
         cin >> actualMsg; 
         
-        m->setSN(srcMsgN);
+            
+        m->setSN(msgSrc);
         m->setDN(msgDest);
-        m->setDP((ports[msgDI]));
         m->setDATA(actualMsg);
-
-        for(int i =0; i<size; i++){
-            if(msgDest == string(1, ch[i])){
-                msgDI = i; //set the destination index 
-            }
-        }
-
-        addr.sin_port = htons(ports[msgDI]); 
+        m->createMsg();
+        inj_msg = m->getDATA();
+        inject_msg = inj_msg.c_str(); 
+ 
+        cout<<(int)(msgDest.c_str()[0]-'A');
+        cout<<"\n";
+        cout<<inject_msg<<"\n";
+        addr.sin_port = htons(ports[(int)(msgSrc.c_str()[0]-'A')]); 
         s = sendto( (this->socks), inject_msg, 100, MSG_CONFIRM, ( struct sockaddr *)&addr, len); //send message to A
+        cout<<"sent a message to "<<msgSrc<<"through port: "<<ports[(int)(msgSrc.c_str()[0]-'A')];                                                            
 
 
     } else {
@@ -230,7 +236,7 @@ void router::dvsend(){
         if(s == -1){
             perror("send error");
         }
-        sleep(rand()%10);
+        sleep(rand()%3);
 
 
 /*
@@ -248,13 +254,14 @@ void router::dvsend(){
 	return;      
 }
 
-/*
+
 void router::Rrecv(int pNum, char src){
     char recvmsg[100]; 
     char sendmsg[100];
     //char abc[size] = {'A','B','C','D', 'E','F'};
     sprintf(sendmsg, "Hello from %c" , src);
     int r;
+    char answ;
     //s; 
     cout << "Server thread running\n";
     memset(&servAddr, 0, sizeof(servAddr));
@@ -264,21 +271,23 @@ void router::Rrecv(int pNum, char src){
     this->servAddr.sin_port = htons(pNum);     
     this->servAddr.sin_addr.s_addr = INADDR_ANY;  
  
+    cout<<"IN FUNCTION RRECV\n";
     
-    while(1)
+    cin>>answ;    
+    while(1){
     //SERVER RECEIVE 
     cout << "SERVER-Waiting to receive...\n";
         r = recvfrom(this->socks, (char *)recvmsg, 100, MSG_WAITALL, 
                         (struct sockaddr *)(this->pCli), this->plen);
 
-	if(recvmsg[0]==(int)(name-'A'))
+	//if(recvmsg[0]==(int)(name-'A'))
         if(r == -1){
             perror("recv error");
         }
         cout << "Server receives {" << recvmsg << "} "<<   endl; 
-            
+    }
 }
-*/ 
+
 
 
 void router::dvrecv(int pNum, char src){
@@ -305,8 +314,8 @@ void router::dvrecv(int pNum, char src){
         }
         //cout << "Server receives {";
 	//cout<<"in function dvrecv\n";
-	for(int a=0;a<(2*size)+1;a++)
-		cout<<dvrecved[a]<<" "; 
+	//for(int a=0;a<(2*size)+1;a++)
+	//	cout<<dvrecved[a]<<" "; 
 
     //Thinking here we need a function to write to file. 
    // writeToFile();
@@ -318,7 +327,7 @@ void router::dvrecv(int pNum, char src){
 
 
 void router::updatetables(){
-    char ch[size]={'A','B','C','D','E','F','G'};
+	char ch[size]={'A','B','C','D','E','F'};
 	updating=false; //counting if update doesn't occur
 
 	for(int forcounter=1;forcounter<size+1;forcounter++){
@@ -326,15 +335,18 @@ void router::updatetables(){
 			cout<<"in here for: "<<(forcounter-1)<<"\n";
 			cout<<dvrecved[forcounter+size]<<" "<<costToNeighbour[dvrecved[0]]<<"     "<<costToNeighbour[forcounter-1]<<" "<<neighbours[forcounter-1]<<" ";
 			cout<<(bool)(dvrecved[forcounter+size]+costToNeighbour[dvrecved[0]]<costToNeighbour[forcounter-1])<<" ";
-			if((((dvrecved[forcounter+size]+costToNeighbour[dvrecved[0]]<costToNeighbour[forcounter-1])&&neighbours[forcounter-1]==1)||costToNeighbour[forcounter-1]==-1)&&(dvrecved[forcounter+size]!=-2))
+			if((((dvrecved[forcounter+size]+costToNeighbour[dvrecved[0]]<costToNeighbour[forcounter-1])&&costToNeighbour[forcounter-1]!=1)||costToNeighbour[forcounter-1]==-1)&&(dvrecved[forcounter+size]!=-2))
 				{
 				cout<<" changed\n";
 				iterations_without_update=0;
 				updating=true; 			//means update occurred
 				costToNeighbour[forcounter-1]=dvrecved[forcounter+size]+costToNeighbour[dvrecved[0]];
-				destVia[forcounter-1]=dvrecved[0];
-				if(neighbours[forcounter-1]==0)
-					neighbours[forcounter-1]=1;
+				if(destVia[dvrecved[0]]==dvrecved[0])
+					destVia[forcounter-1]=dvrecved[0];
+				else
+					destVia[forcounter-1]=destVia[dvrecved[0]];
+				//if(neighbours[forcounter-1]==0)
+				//	neighbours[forcounter-1]=1;
 				}
 			//else if((neighbours[forcounter-1]==-1)&&(forcounter-1)==(int)(name-'A')){
 			//	costToNeighbour[dvrecved[0]]=dvrecved[forcounter-1];
@@ -349,18 +361,17 @@ void router::updatetables(){
 
 
 	if(updating){
-		outputfile.open(filename);
+		
 
 		cout<<"tables updated after recieving distance vectors from"<<(ch[dvrecved[0]])<<", new tables: \n"<<"router\t"<<"min cost\tVia\n";
 		outputfile<<"tables updated after recieving distance vectors from"<<(ch[dvrecved[0]])<<", new tables: \n"<<"router\t"<<"min cost\tVia\n";		
-		for(int forcounter=0;forcounter<size;forcounter++)
+		for(int forcounter=0;forcounter<size-1;forcounter++)
 			{
 			cout<<ch[forcounter]<<"\t"<<costToNeighbour[forcounter]<<"\t\t"<<destVia[forcounter]<<"\n";
 			outputfile<<ch[forcounter]<<"\t"<<costToNeighbour[forcounter]<<"\t\t"<<destVia[forcounter]<<"\n";
 			cout<<"written to output stream\n";
 
 			}
-		outputfile.close();
 		}
 
 	else

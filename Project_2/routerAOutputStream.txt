@@ -1,0 +1,16 @@
+tables updated after recieving distance vectors fromE, new tables: 
+router	min cost	Via
+A	-2		-2
+B	3		4
+C	-1		-1
+D	-1		-1
+E	1		4
+F	4		4
+tables updated after recieving distance vectors fromE, new tables: 
+router	min cost	Via
+A	-2		-2
+B	3		4
+C	5		4
+D	7		4
+E	1		4
+F	4		4

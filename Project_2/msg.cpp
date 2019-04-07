@@ -17,11 +17,11 @@
 #define size 7
 
     Msg::Msg(){
-        this->data = " ";
-        this->srcName = "A"; 
-        this->destName = "B"; 
-        this->destPort = 10000;  
-         
+        this->data = "";
+        this->srcName = ""; 
+        this->destName = ""; 
+        this->destPort = -1;  
+        this->msg= "";
     }
 
 
@@ -29,34 +29,34 @@
         //MESSAGE FORMAT: [SRC,DEST,PORT,DATA]
         //                [1  , 1   , 5   , 100]
         string portAsStr = to_string(this->destPort);
-        this->data = this->srcName + "," + this->destName + "," + portAsStr + "," + this->data + "\n";
-        cout << "PACKET: " << this->data; 
+        this->data += "i" + this->srcName + " " + this->destName  + " " + this->msg + "\n";
+        cout << "PACKET: " << this->data << endl; 
     }
 
 
 
     //SETTERS 
-    void Msg::setDP(int DP){
-        this->destPort = DP; 
-    }
     void Msg::setDN(string DN){
         this->destName = DN; 
+        cout<<"set destName to "<<destName<<"\n";
     }
     void Msg::setSN(string SN){
         this->srcName = SN; 
+        cout<<"set srcName to "<<srcName<<"\n";
     }
     void Msg::setDATA(string d){
-        this->data = d; 
+        this->msg = d; 
+        cout<<"set data to "<<data<<"\n";
     }
      
     //GETTERS 
-    int Msg::getDP(){
-        return this->destPort;
-    }
+
     string Msg::getDN(){
         return this->destName; 
     }
     string Msg::getSN(){
         return this->srcName; 
     }
-
+    string Msg::getDATA(){
+        return (this->data); 
+    }
