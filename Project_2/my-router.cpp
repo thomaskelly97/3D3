@@ -17,13 +17,15 @@
 
 #define size 7
 using namespace std; 
-int threadCount =0; 
+int threadCount =0, PingthreadCount=0; 
+int bothConverged =0; 
 router *r = new router(); //instantiate a router 
 void * threadInit(void * x);
+void * pingInit(void * x);
 //int nTable[size][size] = {0,1,1,0, 1,0,0,1, 1,0,0,1, 0,1,1,0}; 
 
 
-
+pthread_t pingST, RrecvT; 
 
 //PRABHJOT PARSER VARIABLES
  char ch[size]={'A','B','C','D','E','F','G'};												
@@ -102,7 +104,8 @@ void clientInit(){
 
 void serverInit(){
      int count=0;    
-	
+	int x =0; 
+	x++; 
 	r->outputfile.open(r->filename);
     while(!r->isupdated){
     	r->dvrecv(port,src);
@@ -122,6 +125,10 @@ void serverInit(){
 	
 	r->outputfile.close();
   cout<<"\nback in function serverInit()\n  ";
+  //in serverInit
+  
+ 
+
 	r->Rrecv(port,src);
 }
 
@@ -136,6 +143,40 @@ void * threadInit(void *x){
     } else if(threadCount == 2){
         //cout << "Client thread\n"; 
         clientInit();
+    }
+    return NULL; 
+}
+
+
+void pingerInit(){
+	//This sets up the pinger functionality 
+	//We want to ping neighbours, then wait for a response. 
+	int i; 
+	cout << "PING THREAD\n"; 
+	 
+
+	cout << "Entering Ping Func.\n";
+		
+	r->ping(); 
+	
+}
+
+void RrecvInit(){
+	r->Rrecv(port,src); //runs the Rrecv function as normal... 
+}
+
+
+void * pingInit(void *x){
+    int * xI = (int *) x;
+    xI++;  
+    PingthreadCount++; 
+	
+    if(PingthreadCount == 1){
+        //cout << "Server thread\n";
+		RrecvInit();
+    } else if(PingthreadCount == 2){
+        //cout << "Client thread\n"; 
+        pingerInit(); 
     }
     return NULL; 
 }

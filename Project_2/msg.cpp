@@ -29,7 +29,7 @@
         //MESSAGE FORMAT: [SRC,DEST,PORT,DATA]
         //                [1  , 1   , 5   , 100]
         string portAsStr = to_string(this->destPort);
-        this->data += "i" + this->srcName + " " + this->destName  + " " + this->msg + "\n";
+        this->data += "i" + this->srcName + " " + this->destName  + " " + this->msg;
         cout << "PACKET: " << this->data << endl; 
     }
 

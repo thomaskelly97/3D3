@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 rm my-router
+rm Network
 rm routing-outputA.txt 
 rm routing-outputB.txt 
 rm routing-outputC.txt 

@@ -43,6 +43,7 @@ public:
     bool isupdated;  //if table got updated
     bool isupdatedsend; //if send thread is left behind
     bool dvsendready; //dv is send ready
+    int pingCount[size]; 
     string filename;
     ofstream outputfile;
     int dvrecved[20];
@@ -66,6 +67,7 @@ public:
     void dvrecv(int pNum,char src);
     void updatetables();
     void writeToFile();
+    void ping(); 
 };
 
 #endif
