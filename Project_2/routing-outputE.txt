@@ -47,12 +47,53 @@ written to output stream
 F	3		5
 written to output stream
 SERVER-Waiting to receive...
-in here for: 0
--2 1     1 1 1 in here for: 1
-4 1     2 1 0 in here for: 4
-1 1     -2 -1 0 no updates this time
+source port: 10004sending dvs to neighboursin here for: 0
+4 3     1 1 0 in here for: 1
+1 3     2 1 0 in here for: 2
+1 3     4 0 0 in here for: 3
+3 3     6 0 0 in here for: 4
+3 3     -2 -1 0 in here for: 5
+-2 3     3 1 1 no updates this time
 SERVER-Waiting to receive...
-in here for: 1
+out of dvsend() with sendcount= 0
+1source port: 10004sending dvs to neighboursin here for: 0
+4 3     1 1 0 in here for: 1
+1 3     2 1 0 in here for: 2
+1 3     4 0 0 in here for: 3
+3 3     6 0 0 in here for: 4
+3 3     -2 -1 0 in here for: 5
+-2 3     3 1 1 no updates this time
+SERVER-Waiting to receive...
+in here for: 0
+4 3     1 1 0 in here for: 1
+1 3     2 1 0 in here for: 2
+1 3     4 0 0 in here for: 3
+3 3     6 0 0 in here for: 4
+3 3     -2 -1 0 in here for: 5
+-2 3     3 1 1 no updates this time
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 1
+2source port: 10004sending dvs to neighboursout of dvsend() with sendcount= 2
+3source port: 10004sending dvs to neighboursin here for: 0
+4 3     1 1 0 in here for: 1
+1 3     2 1 0 in here for: 2
+1 3     4 0 0 in here for: 3
+3 3     6 0 0 in here for: 4
+3 3     -2 -1 0 in here for: 5
+-2 3     3 1 1 no updates this time
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 3
+4source port: 10004sending dvs to neighboursin here for: 0
+4 3     1 1 0 in here for: 1
+1 3     2 1 0 in here for: 2
+1 3     4 0 0 in here for: 3
+3 3     6 0 0 in here for: 4
+3 3     -2 -1 0 in here for: 5
+-2 3     3 1 1 no updates this time
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 4
+5source port: 10004sending dvs to neighboursin here for: 0
+4 3     1 1 0 in here for: 1
 1 3     2 1 0 in here for: 2
 1 3     4 0 0 in here for: 3
 3 3     6 0 0 in here for: 4
@@ -61,51 +102,35 @@ in here for: 1
 SERVER-Waiting to receive...
 in here for: 0
 -2 1     1 1 1 in here for: 1
-4 1     2 1 0 in here for: 4
-1 1     -2 -1 0 no updates this time
-SERVER-Waiting to receive...
-in here for: 1
-1 3     2 1 0 in here for: 2
-1 3     4 0 0 in here for: 3
-3 3     6 0 0 in here for: 4
-3 3     -2 -1 0 in here for: 5
--2 3     3 1 1 no updates this time
-SERVER-Waiting to receive...
-in here for: 1
-1 3     2 1 0 in here for: 2
-1 3     4 0 0 in here for: 3
-3 3     6 0 0 in here for: 4
-3 3     -2 -1 0 in here for: 5
--2 3     3 1 1 no updates this time
-SERVER-Waiting to receive...
-in here for: 0
-4 2     1 1 0 in here for: 1
--2 2     2 1 1 in here for: 2
-2 2     4 0 0 in here for: 3
-4 2     6 0 0 in here for: 4
-2 2     -2 -1 0 in here for: 5
-1 2     3 1 0 no updates this time
-SERVER-Waiting to receive...
-in here for: 0
--2 1     1 1 1 in here for: 1
-4 1     2 1 0 in here for: 2
-6 1     4 0 0 in here for: 3
-8 1     6 0 0 in here for: 4
+3 1     2 1 0 in here for: 2
+5 1     4 0 0 in here for: 3
+7 1     6 0 0 in here for: 4
 1 1     -2 -1 0 in here for: 5
-5 1     3 1 0 no updates this time
+4 1     3 1 0 no updates this time
 
 back in function serverInit()
-  IN FUNCTION RRECV
-source port: 10004sending dvs to neighboursout of dvsend() with sendcount= 0
-1source port: 10004sending dvs to neighboursout of dvsend() with sendcount= 1
-2source port: 10004sending dvs to neighboursout of dvsend() with sendcount= 2
-3source port: 10004sending dvs to neighboursout of dvsend() with sendcount= 3
-4source port: 10004sending dvs to neighboursout of dvsend() with sendcount= 4
-5source port: 10004sending dvs to neighboursout of dvsend() with sendcount= 5
+  Server thread running
+IN FUNCTION RRECV
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 5
 6
 back in function clientInit()
-NAME OF ROUTER:E
-I'm alive string:pE
-Network has converged for the moment...waiting
-Received ping. Send response.Received ping. Send response.Received ping. Send response.entering while loop
-==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Send response.==>F Received ping. Send response.Received ping. Send response.==>A ==>B Received ping. Send response.==>F Received ping. Send response.==>A Received ping. Send response.Received ping. Send response.==>B ==>F Received ping. Send response.==>A Received ping. Send response.==>B Received ping. Send response.Received ping. Send response.==>F ==>A Received ping. Send response.==>B Received ping. Se
+Client thread running - Any key to proceed
+IN FUNCTION RSEND
+
+SERVER-Waiting to receive...
+
+SERVER-Waiting to receive...
+
+SERVER-Waiting to receive...
+
+SERVER-Waiting to receive...
+
+SERVER-Waiting to receive...
+>>Message Received from: F
+>>Message path through network:
+>>Received on Mon Apr  8 20:51:17 2019
+	F	-->	E
+>>Received Message:
+ISFASF
+

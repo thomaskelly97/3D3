@@ -25,27 +25,7 @@ name: G,port: -1,cost: -1,via: -1
 D's neighbours: C F 
 SERVER-Waiting to receive...
 in here for: 1
-3 4     -1 0 0  changed
-in here for: 2
--2 4     4 1 1 in here for: 3
-4 4     -2 -1 0 in here for: 5
-1 4     3 1 0 tables updated after recieving distance vectors fromC, new tables: 
-router	min cost	Via
-A	-1		-1
-written to output stream
-B	7		2
-written to output stream
-C	4		2
-written to output stream
-D	-2		-2
-written to output stream
-E	-1		-1
-written to output stream
-F	3		5
-written to output stream
-SERVER-Waiting to receive...
-in here for: 1
-1 3     7 0 1  changed
+1 3     -1 0 0  changed
 in here for: 2
 1 3     4 1 0 in here for: 3
 3 3     -2 -1 0 in here for: 4
@@ -66,49 +46,83 @@ written to output stream
 F	3		5
 written to output stream
 SERVER-Waiting to receive...
+source port: 10003sending dvs to neighboursin here for: 0
+4 3     -1 0 0  changed
 in here for: 1
-2 4     4 0 0 in here for: 2
--2 4     4 1 1 in here for: 3
-4 4     -2 -1 0 in here for: 4
-4 4     6 0 0 in here for: 5
-1 4     3 1 0 no updates this time
+1 3     4 0 0 in here for: 2
+1 3     4 1 0 in here for: 3
+3 3     -2 -1 0 in here for: 4
+3 3     6 0 0 in here for: 5
+-2 3     3 1 1 tables updated after recieving distance vectors fromF, new tables: 
+router	min cost	Via
+A	7		5
+written to output stream
+B	4		5
+written to output stream
+C	4		2
+written to output stream
+D	-2		-2
+written to output stream
+E	6		5
+written to output stream
+F	3		5
+written to output stream
 SERVER-Waiting to receive...
-in here for: 1
+out of dvsend() with sendcount= 0
+0source port: 10003sending dvs to neighboursin here for: 0
+4 3     7 0 0 in here for: 1
 1 3     4 0 0 in here for: 2
 1 3     4 1 0 in here for: 3
 3 3     -2 -1 0 in here for: 4
 3 3     6 0 0 in here for: 5
 -2 3     3 1 1 no updates this time
 SERVER-Waiting to receive...
-in here for: 1
-2 4     4 0 0 in here for: 2
--2 4     4 1 1 in here for: 3
-4 4     -2 -1 0 in here for: 4
-4 4     6 0 0 in here for: 5
-1 4     3 1 0 no updates this time
-SERVER-Waiting to receive...
-in here for: 1
-2 4     4 0 0 in here for: 2
--2 4     4 1 1 in here for: 3
-4 4     -2 -1 0 in here for: 4
-4 4     6 0 0 in here for: 5
-1 4     3 1 0 no updates this time
-SERVER-Waiting to receive...
-source port: 10003sending dvs to neighboursin here for: 1
+in here for: 0
+4 3     7 0 0 in here for: 1
 1 3     4 0 0 in here for: 2
 1 3     4 1 0 in here for: 3
 3 3     -2 -1 0 in here for: 4
 3 3     6 0 0 in here for: 5
 -2 3     3 1 1 no updates this time
 SERVER-Waiting to receive...
-in here for: 1
+out of dvsend() with sendcount= 0
+1source port: 10003sending dvs to neighboursout of dvsend() with sendcount= 1
+2source port: 10003sending dvs to neighboursin here for: 0
+4 3     7 0 0 in here for: 1
 1 3     4 0 0 in here for: 2
 1 3     4 1 0 in here for: 3
 3 3     -2 -1 0 in here for: 4
 3 3     6 0 0 in here for: 5
 -2 3     3 1 1 no updates this time
 SERVER-Waiting to receive...
-in here for: 1
+out of dvsend() with sendcount= 2
+3source port: 10003sending dvs to neighboursin here for: 0
+4 3     7 0 0 in here for: 1
+1 3     4 0 0 in here for: 2
+1 3     4 1 0 in here for: 3
+3 3     -2 -1 0 in here for: 4
+3 3     6 0 0 in here for: 5
+-2 3     3 1 1 no updates this time
+SERVER-Waiting to receive...
+in here for: 0
+5 4     7 0 0 in here for: 1
+2 4     4 0 0 in here for: 2
+-2 4     4 1 1 in here for: 3
+4 4     -2 -1 0 in here for: 4
+4 4     6 0 0 in here for: 5
+1 4     3 1 0 no updates this time
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 3
+4source port: 10003sending dvs to neighboursin here for: 0
+4 3     7 0 0 in here for: 1
+1 3     4 0 0 in here for: 2
+1 3     4 1 0 in here for: 3
+3 3     -2 -1 0 in here for: 4
+3 3     6 0 0 in here for: 5
+-2 3     3 1 1 no updates this time
+SERVER-Waiting to receive...
+in here for: 0
+5 4     7 0 0 in here for: 1
 2 4     4 0 0 in here for: 2
 -2 4     4 1 1 in here for: 3
 4 4     -2 -1 0 in here for: 4
@@ -116,20 +130,19 @@ in here for: 1
 1 4     3 1 0 no updates this time
 
 back in function serverInit()
-  IN FUNCTION RRECV
-out of dvsend() with sendcount= 0
-1source port: 10003sending dvs to neighboursout of dvsend() with sendcount= 1
-2source port: 10003sending dvs to neighboursout of dvsend() with sendcount= 2
-3source port: 10003sending dvs to neighboursout of dvsend() with sendcount= 3
-4source port: 10003sending dvs to neighboursout of dvsend() with sendcount= 4
-5source port: 10003sending dvs to neighboursout of dvsend() with sendcount= 5
+  Server thread running
+IN FUNCTION RRECV
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 4
+5source port: 10003sending dvs to neighbours
+SERVER-Waiting to receive...
+
+SERVER-Waiting to receive...
+out of dvsend() with sendcount= 5
 6
 back in function clientInit()
-NAME OF ROUTER:D
-I'm alive string:pD
-Network has converged for the moment...waiting
-Received ping. Send response.entering while loop
-==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F 
-Server receives iA D hsdf 
-==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C Received ping. Send response.==>F ==>C ==>F Received ping. Send response.Received ping. Send response.==>C ==>F ==>C Received ping. Send response.==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C ==>F Received ping. Send response.==>C 
-Server receives iA D sdfd 
+Client thread running - Any key to proceed
+IN FUNCTION RSEND
+
+SERVER-Waiting to receive...
+

@@ -26,11 +26,18 @@
 
 
     void Msg::createMsg(){
-        //MESSAGE FORMAT: [SRC,DEST,PORT,DATA]
-        //                [1  , 1   , 5   , 100]
+        //MESSAGE FORMAT: [SRC,DEST,whiitespaces for route,DATA]
+        //                [2  , 4   , 5-9   , 100]
         string portAsStr = to_string(this->destPort);
-        this->data += "i" + this->srcName + " " + this->destName  + " " + this->msg;
+        this->data += "i";
+	this->data += " " +this->srcName +" "+ this->destName+"000000" +" "+ this->msg + "\n";
         cout << "PACKET: " << this->data << endl; 
+        cout<< "data.c_str()[2]: "<<data.c_str()[2];
+        cout<< "\ndata.c_str()[4]: "<<data.c_str()[4];
+        cout<< "\ndata.c_str()[5]: "<<data.c_str()[5];
+        cout<< "\ndata.c_str()[9]: "<<data.c_str()[9]<<" ";
+        cout<< "\nlength: "<<sizeof(this->msg)<<"\n";
+        
     }
 
 

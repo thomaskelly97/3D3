@@ -13,19 +13,17 @@
 #include <fstream>
 #include <pthread.h>  
 #include "router.h"
-#include "msg.h"
+#include "Msg.h"
 
 #define size 7
 using namespace std; 
-int threadCount =0, PingthreadCount=0; 
-int bothConverged =0; 
+int threadCount =0; 
 router *r = new router(); //instantiate a router 
 void * threadInit(void * x);
-void * pingInit(void * x);
 //int nTable[size][size] = {0,1,1,0, 1,0,0,1, 1,0,0,1, 0,1,1,0}; 
 
 
-pthread_t pingST, RrecvT; 
+
 
 //PRABHJOT PARSER VARIABLES
  char ch[size]={'A','B','C','D','E','F','G'};												
@@ -81,7 +79,7 @@ int main(int argc, char *argv[])
 }
 
 void clientInit(){
-	sleep(8);
+	sleep(8-(int)(name-'A'));
     while(!r->isupdatedsend){
     	r->dvsend();
 	cout<<"out of dvsend() with sendcount= "<<sendcount<<"\n";
@@ -104,8 +102,7 @@ void clientInit(){
 
 void serverInit(){
      int count=0;    
-	int x =0; 
-	x++; 
+	
 	r->outputfile.open(r->filename);
     while(!r->isupdated){
     	r->dvrecv(port,src);
@@ -125,10 +122,7 @@ void serverInit(){
 	
 	r->outputfile.close();
   cout<<"\nback in function serverInit()\n  ";
-  
-  
- 
-
+	
 	r->Rrecv(port,src);
 }
 
@@ -146,11 +140,6 @@ void * threadInit(void *x){
     }
     return NULL; 
 }
-
-
-
-
-
 
 int charToInt(char c){
     for (int i =0; i< size; i++){
