@@ -15,6 +15,7 @@
 #include <unistd.h> 
 #include <vector> 
 #include <fstream>
+#include <chrono> 
 #define size 7
 using namespace std; 
 
@@ -35,6 +36,10 @@ class router
     socklen_t len; 
     socklen_t * plen = &len; 
     int iterations_without_update;
+
+    //TIMER STUFF 
+    std::chrono::time_point<std::chrono::system_clock> start; 
+    
 
 public: 
     router(); //default constructor 
@@ -67,7 +72,7 @@ public:
     void dvrecv(int pNum,char src);
     void updatetables();
     void writeToFile();
-    void ping(); 
+   
 };
 
 #endif

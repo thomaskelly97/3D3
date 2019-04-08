@@ -125,7 +125,7 @@ void serverInit(){
 	
 	r->outputfile.close();
   cout<<"\nback in function serverInit()\n  ";
-  //in serverInit
+  
   
  
 
@@ -148,38 +148,9 @@ void * threadInit(void *x){
 }
 
 
-void pingerInit(){
-	//This sets up the pinger functionality 
-	//We want to ping neighbours, then wait for a response. 
-	int i; 
-	cout << "PING THREAD\n"; 
-	 
-
-	cout << "Entering Ping Func.\n";
-		
-	r->ping(); 
-	
-}
-
-void RrecvInit(){
-	r->Rrecv(port,src); //runs the Rrecv function as normal... 
-}
 
 
-void * pingInit(void *x){
-    int * xI = (int *) x;
-    xI++;  
-    PingthreadCount++; 
-	
-    if(PingthreadCount == 1){
-        //cout << "Server thread\n";
-		RrecvInit();
-    } else if(PingthreadCount == 2){
-        //cout << "Client thread\n"; 
-        pingerInit(); 
-    }
-    return NULL; 
-}
+
 
 int charToInt(char c){
     for (int i =0; i< size; i++){

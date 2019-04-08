@@ -10,6 +10,8 @@
 #include <sstream> 
 #include <errno.h> 
 #include <unistd.h> 
+#include <ctime>
+#include <typeinfo> 
 #include "router.h"
 #include "Msg.h"
 using namespace std; 
@@ -70,7 +72,8 @@ void router::initialise(char n, int p, int srcNum){ // initialises address setti
     if(bind(this->socks, (const struct sockaddr *)(this->pSer), sizeof(this->servAddr)) <0){
         perror("bind error"); 
     }
-
+    this->start = std::chrono::system_clock::now();
+    //cout << "STARTING TIME:" << this->start; 
 
 }
 
@@ -107,11 +110,16 @@ int router::getANeighbour(int index){
 
 
 void router::Rsend(){    
-    //CLIENT SEND 
-    string PingMsg = "p" + this->name;                     
+    //CLIENT SEND
+                       
     bool update = true; 
     char answ; 
-
+    string imAlive = "";
+    imAlive = this->name; 
+    cout << "NAME OF ROUTER:" << this->name<<endl; 
+    imAlive.insert(0, "p"); 
+    cout << "I'm alive string:" << imAlive << endl; 
+    char ch[size] = {'A','B','C','D','E','F','G'};
     struct sockaddr_in addr; 
     socklen_t len = sizeof(addr); 
 
@@ -130,16 +138,19 @@ void router::Rsend(){
 
    int via = destVia[(int)(recvmsg[0]-'A')];    //recvmsg[0] is destination , recvmsg[1] is source...
 
-	cout<<"IN FUNCTION RSEND\n";
-        cin >> answ; 
-       cout << "leggoS\n";
+	cout<<"Network has converged for the moment...waiting\n";
+       cin >> answ;  
+       cout << "entering while loop\n"; 
+    while(1){   //repeatedly send to neighbours 
         for(int i=0;i<size;i++){
-            cout << "Sending to neighbours\n";
+            //cout << "Sending to neighbours\n";
             if(this->neighbours[i] == 1 ){//if something is a neighbour, send to it
                 //we can now use the i
-                cout << "sending ping";
+               // cout << "sending ping";
+                cout << "==>" << ch[i] << " "; 
                 addr.sin_port = htons(ports[i]);
-                s = sendto( (this->socks), PingMsg.c_str(), 100, MSG_CONFIRM, ( struct sockaddr *)&addr, len); //PING THE NEIGHBOURS 
+                s = sendto( (this->socks), imAlive.c_str(), 100, MSG_CONFIRM, ( struct sockaddr *)&addr, len); //PING THE NEIGHBOURS
+                sleep(1);  
  	       }
         
         
@@ -147,10 +158,10 @@ void router::Rsend(){
             perror("send error");
 
             }
-        }
-	       //cout << "CLIENT- receiving response: " << recvmsg << endl; 
- 
+        } 
+    }
 }
+
 void router::dvsend(){    
     //CLIENT SEND 
     char ch[size]={'A','B','C','D','E','F','G'};
@@ -181,7 +192,7 @@ void router::dvsend(){
     addr.sin_family = AF_INET;  
     addr.sin_addr.s_addr = inet_addr("127.0.0.1");
     memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
-    
+    //THIS STATEMENT HANDLES MESSAGE INJECTION 
     if(this->name == 'G'){ //if this is node G, user has specified for message injection to occur 
         const char *inject_msg;
         string inj_msg; 
@@ -206,9 +217,8 @@ void router::dvsend(){
         cout<<inject_msg<<"\n";
         addr.sin_port = htons(ports[(int)(msgDest.c_str()[0]-'A')]); 
         s = sendto( (this->socks), inject_msg, 100, MSG_CONFIRM, ( struct sockaddr *)&addr, len); //send message to A
-        //cout<<"sent a message to "<<msgSrc<<"through port: "<<ports[(int)(msgSrc.c_str()[0]-'A')];  
-        //cout << "pinging\n";                                                          
-        this->ping();
+                                                               
+        
 
     } else {
         //else run the client thread normally 
@@ -266,49 +276,49 @@ int charToInt2(char c){
 
 
 void router::Rrecv(int pNum, char src){
-    char recvmsg[100]; 
-    char sendmsg[100];
+    char rmsg[100] = {0}; 
+    string resp_msg = "r" + this->name;
+    char retRouter; 
     //char abc[size] = {'A','B','C','D', 'E','F'};
-    sprintf(sendmsg, "Hello from %c" , src);
-    int r,wCI;
-    char answ,ping = 'p'; 
-    char whereCame; 
+   // sprintf(sendmsg, "Hello from %c" , src);
+    int r,wCI,s;
+
+    struct sockaddr_in addr; 
+    socklen_t len = sizeof(addr); 
     //s; 
     //cout << "Server thread running\n";
-    memset(&servAddr, 0, sizeof(servAddr));
-    memset(&cliAddr, 0, sizeof(cliAddr));
-
-    this->servAddr.sin_family = AF_INET;
-    this->servAddr.sin_port = htons(pNum);     
-    this->servAddr.sin_addr.s_addr = INADDR_ANY;  
+    addr.sin_family = AF_INET;  
+    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
  
     cout<<"IN FUNCTION RRECV\n";
     
-    cin>>answ;    
+   // cin>>answ;    
     while(1){
     //SERVER RECEIVE 
-    cout << "S ";
-    for(int ii = 0; ii<size; ii++){
-        if(this->neighbours[ii] == 1){
-            this->pingCount[ii]++; //increment the ping count of all neighbouring nodes 
-        }
-    }
+    //cout << "S ";
     
-        r = recvfrom(this->socks, (char *)recvmsg, 100, MSG_WAITALL, 
+        r = recvfrom(this->socks, (char *)rmsg, 100, MSG_WAITALL, 
                         (struct sockaddr *)(this->pCli), this->plen);
 
 	//if(recvmsg[0]==(int)(name-'A'))
         if(r == -1){
             perror("recv error");
         }
-        if(recvmsg[0] == 'i'){
-            cout << "\nServer receives " << recvmsg << " "<<   endl; 
-        } else if (recvmsg[0] == 'p'){
-            cout << "RP-";//want to send response 
-            whereCame = recvmsg[1]; //take in src name 
-            wCI = charToInt2(whereCame);
-            this->pingCount[wCI] = 0; //if the node gets a ping from another node 'whereCame' set that nodes ping count to 0 
-            this->ping(); 
+        if(rmsg[0] == 'i'){
+            cout << "\nServer receives " << rmsg << " "<<   endl; 
+        } else if(rmsg[0] == 'p')  {
+            cout << "Received ping. Send response.";
+            retRouter = rmsg[1]; 
+            addr.sin_port = htons(ports[charToInt2(retRouter)]);
+            s = sendto( (this->socks), resp_msg.c_str(), 100, MSG_CONFIRM, ( struct sockaddr *)&addr, len);
+        } else if(rmsg[0] == 'r'){
+            //we've received a response to our ping... 
+            cout << "GG-";
+            //here set counters for specific neighbours back to zero. 
+            //use the name part of the message to get specific index of router 
+            //use its index to set a counter back to zero. 
+            //if a nodes counter gets too high... kill it 
         }
         
        /*
@@ -362,23 +372,6 @@ void router::dvrecv(int pNum, char src){
     }
 }
 
-void router::ping(){
-    string pingMsg = "p" + this->name; 
-    int s; 
-    struct sockaddr_in addr; 
-    addr.sin_family = AF_INET;  
-    addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    memset(addr.sin_zero, '\0', sizeof(addr.sin_zero));
-
-    for(int i =0;i<size;i++){
-        //cout << "pinging\n";
-        if(this->neighbours[i] == 1){
-                addr.sin_port = htons(portForNeighbour[i]);
-                s = sendto( (this->socks), pingMsg.c_str(), 100, MSG_CONFIRM, ( struct sockaddr *)&addr, len);
-                sleep(1);
-        }
-    }
-}
 
 
 void router::updatetables(){
