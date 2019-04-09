@@ -1,0 +1,27 @@
+port(10003)
+Router: D(3)
+>>Parsing topology file...
+D's neighbours: C F 
+tables updated after recieving distance vectors fromF, new tables: 
+Router	Updated Cost	Via
+A	7		5
+B	4		5
+C	4		2
+D	-2		-2
+E	6		5
+F	3		5
+----------------------------------------------------------------------
+1
+
+23
+4
+56
+>> This router has finished converging.
+>>Message Received from: A
+>>Received on Tue Apr  9 12:36:40 2019
+>>Message path through network:
+	A	-->	E	-->	F	-->	D
+>>Received Message:
+sd
+----------------------------------------------------------------------
+

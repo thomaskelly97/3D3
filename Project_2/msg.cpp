@@ -30,13 +30,13 @@
         //                [2  , 4   , 5-9   , 100]
         string portAsStr = to_string(this->destPort);
         this->data += "i";
-	this->data += " " +this->srcName +" "+ this->destName+"000000" +" "+ this->msg + "\n";
+	    this->data += " " +this->srcName +" "+ this->destName+"000000" +" "+ this->msg + "\n";
         cout << "PACKET: " << this->data << endl; 
-        cout<< "data.c_str()[2]: "<<data.c_str()[2];
-        cout<< "\ndata.c_str()[4]: "<<data.c_str()[4];
-        cout<< "\ndata.c_str()[5]: "<<data.c_str()[5];
-        cout<< "\ndata.c_str()[9]: "<<data.c_str()[9]<<" ";
-        cout<< "\nlength: "<<sizeof(this->msg)<<"\n";
+       // cout<< "data.c_str()[2]: "<<data.c_str()[2];
+        //cout<< "\ndata.c_str()[4]: "<<data.c_str()[4];
+        //cout<< "\ndata.c_str()[5]: "<<data.c_str()[5];
+        //cout<< "\ndata.c_str()[9]: "<<data.c_str()[9]<<" ";
+        //cout<< "\nlength: "<<sizeof(this->msg)<<"\n";
         
     }
 
@@ -45,15 +45,15 @@
     //SETTERS 
     void Msg::setDN(string DN){
         this->destName = DN; 
-        cout<<"set destName to "<<destName<<"\n";
+        //cout<<"set destName to "<<destName<<"\n";
     }
     void Msg::setSN(string SN){
         this->srcName = SN; 
-        cout<<"set srcName to "<<srcName<<"\n";
+        //cout<<"set srcName to "<<srcName<<"\n";
     }
     void Msg::setDATA(string d){
         this->msg = d; 
-        cout<<"set data to "<<data<<"\n";
+        //cout<<"set data to "<<data<<"\n";
     }
      
     //GETTERS 

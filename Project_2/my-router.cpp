@@ -55,14 +55,19 @@ int main(int argc, char *argv[])
    // dstNum = charToInt(dest);
 
     parser();
-    cout << "Router: " << src << "(" << srcNum <<")\n"; 
+	if(src != 'G'){
+		cout << "Router: " << src << "(" << srcNum <<")\n"; 
+	} else {
+		cout << ">>Initialsing message injector...\n";
+	}
+    
 
     r->initialise(src,port, srcNum); // initialise router 'A' on port 10000 as a client type(1)
     //r->setNeighbours(srcNum, neighbours); //I need to take the parsed data from this file and set it in the router.cpp file. 
 
     r->setparserstuff(neighbours,neighbour_ports,link_cost);
     
-    cout << src << "'s neighbours: ";
+    cout << ">>Parsing topology file...\n"<< src << "'s neighbours: ";
     for(int ii = 0; ii<size; ii++){
         if(r->getANeighbour(ii) == 1){
             cout << ch[ii] << " "; 
@@ -82,20 +87,20 @@ void clientInit(){
 	sleep(8-(int)(name-'A'));
     while(!r->isupdatedsend){
     	r->dvsend();
-	cout<<"out of dvsend() with sendcount= "<<sendcount<<"\n";
+	//cout<<"out of dvsend() with sendcount= "<<sendcount<<"\n";
 	if(!r->updating)
 		sendcount++;
 	else 
 		sendcount=0;
 
-	cout<<sendcount;
-	if(sendcount>=6)
+	//cout<<sendcount;
+	if(sendcount>=8)
 		r->isupdatedsend=true;
 	}	
 	r->isupdated=false;
 	r->msgflag=1;
 	
-    cout<<"\nback in function clientInit()\n";
+    cout<<"\n>> This router has finished converging.\n";
 	r->Rsend();
 }
 
@@ -114,14 +119,14 @@ void serverInit(){
     else 
 	count=0;
 
-     if(count>=7){											
+     if(count>=8){											
 	r->isupdated=true;
 	r->msgflag=1;
 	}
 	}
 	
 	r->outputfile.close();
-  cout<<"\nback in function serverInit()\n  ";
+  	//cout<<"\nback in function serverInit()\n  ";
 	
 	r->Rrecv(port,src);
 }
@@ -278,7 +283,7 @@ void parser(){
 				}
 				if(j==3)
 				neighbour_ports[y]=stoi(z_string);
-				cout<<"for "<<y<<": "<<neighbour_ports[y]<<"\n";
+				//cout<<"for "<<y<<": "<<neighbour_ports[y]<<"\n";
 				while(!(a[i]<0)){
 					cost_string+=a[i++];
 					}
@@ -290,7 +295,7 @@ void parser(){
 
 	//neighbour_ports[(int)(name-'A')] = port;
 	neighbours[(int)(name-'A')]=-1;
-	cout<<"port(" << port<<"\n" ;//<< "): "<<port<<", neighbours of " << src << ": ";
+	cout<<"port(" << port<<")\n" ;//<< "): "<<port<<", neighbours of " << src << ": ";
 //		for(i=0;i<7;i++){
 
 //		if(neighbours[i]){

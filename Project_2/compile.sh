@@ -9,11 +9,11 @@ rm routing-outputD.txt
 rm routing-outputE.txt 
 rm routing-outputF.txt 
 
-rm routerAOutputStream
-rm routerBOutputStream
-rm routerCOutputStream
-rm routerDOutputStream
-rm routerEOutputStream
-rm routerFOutputStream
-
+rm routerAOutputStream.txt 
+rm routerBOutputStream.txt 
+rm routerCOutputStream.txt 
+rm routerDOutputStream.txt 
+rm routerEOutputStream.txt 
+rm routerFOutputStream.txt 
+killall xterm
 make
