@@ -9,6 +9,7 @@ void RemoveRouter(const char* inputfile, const char* outputfile);
 void Initialise(const char* inputfile);
 void InjectTraffic();
 
+
 int main ()
 {
     const char* in = "start-router";
@@ -44,40 +45,35 @@ void RemoveRouter(const char* inputfile, const char* outputfile){
     string Name;
     const char* name;
     bool recieved = true;
-    cout << "\nWould you like to shut down a router? (Y/N) ";
-
-    while(recieved){
-        cin >> response;
-        if(response != 'Y' || response != 'y' || response != 'N' ||  response != 'n')
-            recieved = false;
-        else 
-            cout << "Invalid input : Format--> Y or N" ;
-    }
-    if(response == 'Y' || response == 'y'){
-
-        cout << "\nPlease name router you would like to shut off ";
-        cin >> Name;
-        name = Name.c_str();
-        system("killall xterm");
-        RemoveLineContaining(inputfile, outputfile, name);
-        Initialise(outputfile);         
-        InjectTraffic();    
-    }
-    else
-    {
-        recieved = true;
-        cout << "\nWould you like to close? (Y/N)";
+    bool end = true;
+    
+    while(end){
         while(recieved){
+            cout << "\nWould you like to shut down a router? (Y/N) ";
             cin >> response;
-            if(response != 'Y' || response != 'y' || response != 'N' ||  response != 'n'){
+            if(response != 'Y' || response != 'y' || response != 'N' ||  response != 'n')
                 recieved = false;
-                system("killall xterm");
-            }
             else 
                 cout << "Invalid input : Format--> Y or N" ;
         }
-    }    
-    
+        if(response == 'Y' || response == 'y'){
+
+            cout << "\nPlease name router you would like to shut off ";
+            cin >> Name;
+            name = Name.c_str();
+            system("killall xterm");
+            RemoveLineContaining(inputfile, outputfile, name);
+            Initialise(outputfile);         
+            InjectTraffic();    
+            recieved = true;
+        }
+        else if (response == 'N' || response == 'n')
+        {
+            cout << "\nClosing...\n";
+            system("killall xterm");
+            end = false;
+        }    
+    }
 
 }
 

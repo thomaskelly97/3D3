@@ -50,6 +50,9 @@ int main(int argc, char *argv[])
 
     src = *argv[1];
     name = src; 
+	if(name > 'G'){
+		cout << "Specify neighbours:\n"; 
+	}
     
     srcNum = charToInt(src);
    // dstNum = charToInt(dest);
