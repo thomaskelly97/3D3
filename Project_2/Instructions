@@ -1,0 +1,8 @@
+Group6 - Instructions 
+1. The program can be compiled using 'make' or by running the shell script './compile.sh', which essentially deletes executables and .txt files, then re-makes the program. 
+2. The program can be run using './Network', which initialises the network with a message injector terminal and delete node capability in the terminal it was initially run from. The user is prompted for a response and to select a node to delete. 
+3. It can take up to 10-15 seconds for the routers to begin to converge, a message will be printed informing the user of this activity. 
+4. The network can also be run without message injection and delete-node using './start-router'
+5. A message injection terminal can be opened manually by running './inject_msg'
+6. Routers can be intialised on their own by using './my-router X', where X denotes the char name of the router. 
+ 
