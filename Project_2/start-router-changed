@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo 'xterm -title "A" -hold -e "./my-router A 10000 | tee routing-outputA.txt" & sleep 1
-xterm -title "B" -hold -e "./my-router B 10001 | tee routing-outputB.txt" & sleep 1
+xterm -title "C" -hold -e "./my-router C 10002 | tee routing-outputC.txt" & sleep 1
 xterm -title "D" -hold -e "./my-router D 10003 | tee routing-outputD.txt" & sleep 1
 xterm -title "E" -hold -e "./my-router E 10004 | tee routing-outputE.txt" & sleep 1
 xterm -title "F" -hold -e "./my-router F 10005 | tee routing-outputF.txt" & sleep 1' | shuf > exec
