@@ -8,6 +8,9 @@ rm routing-outputC.txt
 rm routing-outputD.txt 
 rm routing-outputE.txt 
 rm routing-outputF.txt 
+rm routerGOutputSteam
+rm routerGOutputSteam.txt
+rm router OutputStream
 
 rm routerAOutputStream.txt 
 rm routerBOutputStream.txt 

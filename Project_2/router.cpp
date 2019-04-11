@@ -17,7 +17,8 @@
 using namespace std; 
 
 //int nTable[size][size] = {0,1,0,0,1,0, 1,0,1,0,1,1, 0,1,0,1,0,1, 0,0,1,0,0,1,  1,1,0,0,0,1, 0,1,1,1,1,0};  //this will have to be updated upon network initialisation 
- 
+//Group6; Thomas Kelly, Prabhjot Singh, Naoise Myler
+
 
 
 router::router(){ //default constructor 

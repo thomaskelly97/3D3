@@ -22,7 +22,7 @@ router *r = new router(); //instantiate a router
 void * threadInit(void * x);
 //int nTable[size][size] = {0,1,1,0, 1,0,0,1, 1,0,0,1, 0,1,1,0}; 
 
-
+//Group6; Thomas Kelly, Prabhjot Singh, Naoise Myler
 
 
 //PRABHJOT PARSER VARIABLES
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
     int x=0,srcNum;
     x++; 
     pthread_t serverT, clientT; 
-
+	
     src = *argv[1];
     name = src; 
 	if(name > 'G'){
