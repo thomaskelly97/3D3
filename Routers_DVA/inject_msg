@@ -1,4 +1,4 @@
 #!/bin/bash
 
 
-xterm -title "G" -hold -e ". sendtraffic"
+xterm -title "G" -hold -e ". sendtraffic.sh"

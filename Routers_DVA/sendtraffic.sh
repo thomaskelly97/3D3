@@ -1,54 +1,54 @@
-my-router G 10006
+./my-router G 10006
 sleep .1
- A B Hello
+A B Hello
 sleep .1
- A C Hello
+A C Hello
 sleep .1
- A D Hello
+A D Hello
 sleep .1
- A E Hello
+A E Hello
 sleep .1
- A F Hello
+A F Hello
 sleep .1
- B A Hello
+B A Hello
 sleep .1
- B C Hello
+B C Hello
 sleep .1
- B D Hello
+B D Hello
 sleep .1
- B E Hello
+B E Hello
 sleep .1
- B F Hello
+B F Hello
 sleep .1
- C A Hello
+C A Hello
 sleep .1
- C B Hello
+C B Hello
 sleep .1
- C D Hello
+C D Hello
 sleep .1
- C E Hello
+C E Hello
 sleep .1
- C F Hello
+C F Hello
 sleep .1
- D A Hello
+D A Hello
 sleep .1
- D B Hello
+D B Hello
 sleep .1
- D C Hello
+D C Hello
 sleep .1
- D E Hello
+D E Hello
 sleep .1
- D F Hello
+D F Hello
 sleep .1
- F A Hello
+F A Hello
 sleep .1
- F B Hello
+F B Hello
 sleep .1
- F C Hello
+F C Hello
 sleep .1
- F D Hello
+F D Hello
 sleep .1
- F E Hello | shuf > exec
+F E Hello | shuf > exec
 chmod 777 exec
 ./exec
 rm exec
