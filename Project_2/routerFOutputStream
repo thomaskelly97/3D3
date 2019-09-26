@@ -1,9 +1,0 @@
-tables updated after recieving distance vectors fromE, new tables: 
-router	min cost	Via
-A	4		4
-B	1		1
-C	1		2
-D	3		3
-E	3		4
-F	-2		-2
-G	-1		-1
